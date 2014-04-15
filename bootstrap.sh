@@ -3,39 +3,40 @@
 EXCLUDED_FILES='^(.|.git|..|README.md|bootstrap.sh|.vim)$'
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOME_DIR=`cd ~; pwd`
+TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
+BACKUP_FOLDER=$HOME_DIR"/.dotfiles-backups/"$TIMESTAMP
 
 cd $DOTFILES_DIR
 # git pull origin master
 
 function bootstrap() {
-  symlink_all_files
+  copy_all_files
 }
 
-function symlink_all_files() {
+function copy_all_files() {
   for file in `ls -a`; do
     [[ $file =~ $(echo $EXCLUDED_FILES) ]] && continue
 
     ORIGIN=$DOTFILES_DIR"/"$file
     TARGET=$HOME_DIR"/"$file
 
-    re_symlink $ORIGIN $TARGET
+    backup_and_copy_file $file $ORIGIN $TARGET
   done;
 }
 
-function re_symlink() {
-  ORIGIN=$1
-  TARGET=$2
+function backup_and_copy_file() {
+  FILENAME=$1
+  ORIGIN=$2
+  TARGET=$3
+  BACKUP_FILE=$BACKUP_FOLDER"/"$FILENAME
 
-  if [ -L $TARGET ]; then
-    echo "Unlinking "$TARGET
-    unlink $TARGET || fail "Unable to unlink "$TARGET
-  else
-    echo "Backing up "$TARGET" -> "$TARGET".backup-dotfiles"
-    mv $TARGET $TARGET".backup-dotfiles" || fail "Unable to backup $TARGET"
-  fi
+  mkdir -p $BACKUP_FOLDER 2> /dev/null
 
-  echo "Linking $ORIGIN -> $TARGET"
-  ln -s $ORIGIN $TARGET || fail "Unable to symlink $ORIGIN -> $TARGET"
+  cp -r $TARGET $BACKUP_FILE 2> /dev/null && echo "Backed up $FILENAME -> $BACKUP_FILE"
+  rm -rf $TARGET 2> /dev/null
+
+  echo "Copying $ORIGIN -> $TARGET"
+  cp -r $ORIGIN $TARGET || fail "Unable to copy $ORIGIN to $TARGET"
 }
 
 function fail() {
@@ -46,18 +47,18 @@ function fail() {
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	bootstrap
 else
-	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
+	read -p "This may overwrite existing files in your home directory (although they are backed up). Are you sure? (y/n) " -n 1
 	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo
     echo "=========================="
-    echo "Start symlinking all files"
+    echo "Start copying all files"
     echo "=========================="
 		bootstrap
 	fi
 fi
 
 unset bootstrap
-unset symlink_all_files
+unset copy_all_files
 unset fail
-unset re_symlink
+unset backup_and_copy_file
