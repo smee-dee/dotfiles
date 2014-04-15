@@ -1,0 +1,461 @@
+set nocompatible
+" vim: nowrap fdm=marker
+"  ---------------------------------------------------------------------------
+"  Plugins
+"  ---------------------------------------------------------------------------
+
+" silent! runtime bundles.vim
+runtime plugins/bclose.vim
+" runtime plugins/mru.vim
+
+"  ---------------------------------------------------------------------------
+"  General
+"  ---------------------------------------------------------------------------
+
+filetype plugin indent on
+let mapleader = ","
+let g:mapleader = ","
+set modelines=0
+set history=10000
+set nobackup
+set nowritebackup
+set noswapfile
+syntax enable
+set autoread
+set showtabline=2
+
+set timeout         " Do time out on mappings and others
+set timeoutlen=500 " Wait {num} ms before timing out a mapping
+
+" When you’re pressing Escape to leave insert mode in the terminal, it will by
+" default take a second or another keystroke to leave insert mode completely
+" and update the statusline. This fixes that. I got this from:
+" https://powerline.readthedocs.org/en/latest/tipstricks.html#vim
+if !has('gui_running')
+  set ttimeoutlen=10
+  augroup FastEscape
+    autocmd!
+    au InsertEnter * set timeoutlen=0
+    au InsertLeave * set timeoutlen=1000
+  augroup END
+endif
+"
+
+"  ---------------------------------------------------------------------------
+"  UI
+"  ---------------------------------------------------------------------------
+
+set title
+set encoding=utf-8
+set scrolloff=10
+set autoindent
+set smartindent
+set showmode
+set showcmd
+set hidden
+set wildmenu
+set wildmode=list:longest
+" set visualbell
+set cursorline
+set ttyfast
+set ruler
+set backspace=indent,eol,start
+set laststatus=2
+set number
+set relativenumber
+set undofile
+
+
+" Auto adjust window sizes when they become current
+" set winwidth=84
+" set winheight=5
+" set winminheight=5
+" set winheight=999
+
+set splitbelow splitright
+
+if has('mouse')
+  set mouse=a
+endif
+
+"  ---------------------------------------------------------------------------
+"  Text Formatting
+"  ---------------------------------------------------------------------------
+
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+set nowrap
+set textwidth=100
+set formatoptions=n
+
+" check to make sure vim has been compiled with colorcolumn support
+" before enabling it
+if exists("+colorcolumn")
+  set colorcolumn=80
+endif
+
+"  ---------------------------------------------------------------------------
+"  Mappings
+"  ---------------------------------------------------------------------------
+
+" Turn off arrow keys (this might not be a good idea for beginners, but it is
+" the best way to ween yourself of arrow keys on to hjkl)
+" http://yehudakatz.com/2010/07/29/everyone-who-tried-to-convince-me-to-use-vim-was-wrong/
+
+" nnoremap <Left> :echoe "Use h"<CR>
+" nnoremap <Right> :echoe "Use l"<CR>
+" nnoremap <Up> :echoe "Use k"<CR>
+" nnoremap <Down> :echoe "Use j"<CR>"
+" inoremap <up> <nop>
+" inoremap <down> <nop>
+" inoremap <left> <nop>
+" inoremap <right> <nop>
+
+" Searching / moving
+set ignorecase
+set smartcase
+set incsearch
+set showmatch
+set hlsearch
+
+" Center screen when scrolling search results
+nmap n nzz
+nmap N Nzz
+
+" ACK
+" set grepprg=''
+" nnoremap <leader>a :Ack
+nmap <leader>a :tab :split<CR>:Ack
+nmap <leader>A :tab :split<CR>:Ack <C-r><C-w><CR>
+
+" AG
+" nnoremap <leader>a :Ack
+"
+" Easy commenting
+" nnoremap // :TComment<CR>
+" vnoremap // :TComment<CR>
+
+" Switch between buffers
+noremap <tab> :bn<CR>
+noremap <S-tab> :bp<CR>
+" close buffer
+nmap <leader>d :Bclose<CR>
+" close all buffers
+nmap <leader>D :bufdo bd<CR>
+
+" Ignore some binary, versioning and backup files when auto-completing
+set wildignore=.svn,CVS,.git,*.swp,*.jpg,*.png,*.gif,*.pdf,*.bak,*source_maps*
+let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
+" Set a lower priority for .old files
+set suffixes+=.old
+
+" rvm-vim automatically as you switch from buffer to buffer
+" :autocmd BufEnter * Rvm
+
+"  ---------------------------------------------------------------------------
+"  Function Keys
+"  ---------------------------------------------------------------------------
+
+" Press F5 to toggle GUndo tree
+" nnoremap <F5> :GundoToggle<CR>
+
+" indent file and return cursor and center cursor
+map   <silent> <F6> mmgg=G`m^zz
+imap  <silent> <F6> <Esc> mmgg=G`m^zz
+
+"  ---------------------------------------------------------------------------
+"  Plugins
+"  ---------------------------------------------------------------------------
+
+" eradicate all trailing whitespace all the time
+let g:DeleteTrailingWhitespace = 1
+let g:DeleteTrailingWhitespace_Action = 'delete'
+
+" AutoClose
+let g:AutoClosePairs = {'(': ')', '{': '}', '[': ']', '"': '"', "'": "'", '#{': '}'}
+let g:AutoCloseProtectedRegions = ["Character"]
+
+" CtrlP
+" nmap <leader>f :CtrlP<cr>
+" nmap <leader>b :CtrlPBuffer<cr>
+" nmap <leader>l :CtrlPMRUFiles<cr>
+" let g:ctrlp_show_hidden = 1
+
+" Command-T
+let g:CommandTMaxFiles=2000000
+let g:CommandTMatchWindowAtTop=0
+let g:CommandTMatchWindowReverse=1
+let g:CommandTRefreshMap='<F5>'
+let g:CommandTHighlightColor='Pmenu'
+nmap <leader>f :CommandT<cr>
+nmap <leader>b :CommandTBuffer<cr>
+
+" Add settings for tabular
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+" Tabularize
+if exists(":Tab")
+  nmap <leader>a\| :Tab /\|<CR>
+  vmap <leader>a\| :Tab /\|<CR>
+  nmap <leader>a= :Tab /=<CR>
+  vmap <leader>a= :Tab /=<CR>
+  nmap <leader>a: :Tab /:\zs<CR>
+  vmap <leader>a: :Tab /:\zs<CR>
+endif
+
+"  ---------------------------------------------------------------------------
+"  Language Mappings
+"  ---------------------------------------------------------------------------
+
+" Other files to consider Ruby
+au BufRead,BufNewFile Gemfile,Rakefile,Thorfile,config.ru,Vagrantfile,Guardfile,Capfile set ft=
+
+" Python
+autocmd FileType python set sw=4 sts=4 et
+
+" CoffeeScript
+let coffee_compile_vert = 1
+au BufNewFile,BufReadPost *.coffee setl foldmethod=indent
+
+" SASS / SCSS
+au BufNewFile,BufReadPost *.scss setl foldmethod=indent
+au BufNewFile,BufReadPost *.sass setl foldmethod=indent
+au BufRead,BufNewFile *.scss set filetype=scss
+
+"  ---------------------------------------------------------------------------
+"  Directories
+"  ---------------------------------------------------------------------------
+
+set backupdir=~/tmp,/tmp
+set undodir=~/.vim/.tmp,~/tmp,~/.tmp,/tmp
+
+" Ctags path (brew install ctags)
+let Tlist_Ctags_Cmd = 'ctags'
+
+" Make Vim use RVM correctly when using Zsh
+" https://rvm.beginrescueend.com/integration/vim/
+set shell=/bin/bash\ -l
+
+" Finally, load custom configs
+if filereadable($HOME . '.vimrc.local')
+  source ~/.vimrc.local
+endif
+
+"  ---------------------------------------------------------------------------
+"  MacVIM
+"  ---------------------------------------------------------------------------
+
+if has("gui_running")
+  set guioptions-=T " no toolbar set guioptions-=m " no menus
+  set guioptions-=r " no scrollbar on the right
+  set guioptions-=R " no scrollbar on the right
+  set guioptions-=l " no scrollbar on the left
+  set guioptions-=b " no scrollbar on the bottom
+  set guioptions=aiA
+endif
+
+"  ---------------------------------------------------------------------------
+"  GnomeTerminal
+"  ---------------------------------------------------------------------------
+"
+set t_Co=256
+
+"  ---------------------------------------------------------------------------
+"  Colors
+"  ---------------------------------------------------------------------------
+" let g:solarized_termcolors=256
+set background=dark
+color blackboard
+colorscheme ir_black
+" hi CursorLine cterm=NONE ctermbg=59 ctermfg=white guibg=darkred guifg=white
+
+"  ---------------------------------------------------------------------------
+"  Misc
+"  ---------------------------------------------------------------------------
+
+
+if exists('$ITERM_PROFILE')
+  if exists('$TMUX')
+    let &t_SI = "\<Esc>[3 q"
+    let &t_EI = "\<Esc>[0 q"
+  else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  endif
+end
+
+" When vimrc, either directly or via symlink, is edited, automatically reload it
+autocmd! bufwritepost .vimrc source %
+autocmd! bufwritepost vimrc source %
+
+map ,t <Esc>:tabnew<CR>
+map ,tf <Esc>:tabf<Space>
+
+execute pathogen#infect()
+execute pathogen#infect()
+" autocmd vimenter * NERDTree
+" map ,nt <Esc>:NERDTree<CR>:NERDTreeMirror<CR>
+" let g:NERDTreeWinSize = 40
+
+set guifont=Monaco:h15
+
+map <leader>al <Esc>:Tabularize /=<CR>
+map <leader>css <Esc>:Tabularize /:\zs/<CR>
+vmap <leader>css dO<CR><CR><ESC>kp:Tabularize /:\zs/<CR>gp<UP><UP><ESC>jd2j
+vmap <leader>al dO<CR><CR><ESC>kp:Tabularize /=<CR>gp<UP><UP><ESC>jd2j
+
+map <leader>ex <Esc>:Explore<CR>
+map <leader>vex <Esc>:Vexplore<CR>
+map <leader>sex <Esc>:Sexplore<CR>
+map <M-s> :w<CR>
+imap <M-s> <Esc>:w<CR>i
+
+set foldlevel=20
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,results:100'
+
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+map <up> ddkP
+map <down> ddp
+map <left> <nop>
+map <right> <nop>
+vmap <down> dpgp
+vmap <up> dkPgp
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+map <leader>h <Esc>:noh<CR>
+map <Leader>h :set invhls <CR>
+set hls!
+
+" map <leader>l <Esc>:MRU<CR>
+map <leader>sf <Esc>:FufCoverageFile<CR>
+map <leader>sl <Esc>:FufLine<CR>
+
+let g:syntastic_ruby_exec = 'ruby19'
+
+au BufRead,BufNewFile *.tpl set filetype=smarty
+map <leader>utf8 muggO<Esc>O# -*- encoding : utf-8 -*-<Esc>`uk<CR>
+map <leader>rspec :!bundle exec rspec spec<CR>
+map <leader>spec :!rspec spec<CR>
+
+:au FocusLost * :set norelativenumber
+:au FocusGained * :set relativenumber
+
+set shiftround " When at 3 spaces and I hit >>, go to 4, not 5.
+set nofoldenable " Say no to code folding...
+
+command! Q q " Bind :Q to :q
+command! Qall qall
+
+" Disable Ex mode
+map Q <Nop>
+
+" Disable K looking stuff up
+map K <Nop>
+
+" When loading text files, wrap them and don't split up words.
+au BufNewFile,BufRead *.txt setlocal wrap
+au BufNewFile,BufRead *.txt setlocal lbr
+au BufNewFile,BufRead *.txt setlocal nolist " Don't display whitespace
+
+" Merge a tab into a split in the previous window
+function! MergeTabs()
+  if tabpagenr() == 1
+    return
+  endif
+  let bufferName = bufname("%")
+  if tabpagenr("$") == tabpagenr()
+    close!
+  else
+    close!
+    tabprev
+  endif
+  split
+  execute "buffer " . bufferName
+endfunction
+
+nmap <C-W>u :call MergeTabs()<CR>
+
+" Don't add the comment prefix when I hit enter or o/O on a comment line.
+set formatoptions-=or
+
+au BufWritePre *.rb :%s/\s\+$//e
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE (thanks Gary Bernhardt)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <Leader>ren :call RenameFile()<cr>
+
+match Error /[\x7f-\xff]/
+
+map <D-j> }
+map <D-k> {
+
+map <S-Tab> <esc>:b #<cr>
+
+let g:netrw_dirhistmax=0
+let g:netrw_dirhist_cnt=0
+
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+" map <Leader>a :call RunAllSpecs()<CR>
+
+imap jj <esc>
+imap Jj <esc>
+imap jJ <esc>
+imap JJ <esc>
+vmap v <esc>
+
+" popup menu behavior
+" inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+" inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+" inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+" inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+" inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+"
+let g:vimrubocop_config = '/Users/schmiddi/code/kaeuferportal/cms/.rubocop.yml'
+let g:vimrubocop_keymap = 0
+nmap <Leader>r :RuboCop<CR>
+
+" Move the splits arround!
+nmap <silent> <c-s-k> <C-W>k
+nmap <silent> <c-s-j> <C-W>j
+nmap <silent> <c-s-h> <C-W>h
+nmap <silent> <c-s-l> <C-W>l
+
+" . should run for each line in visual mode
+vnoremap . :normal .<CR>
+
+
+" ruby Hash conversions
+map <Leader>hash19 ^f:xea:<ESC>ldf>
+map <Leader>hash18 ^f:xbi:<ESC>ea =><ESC>
