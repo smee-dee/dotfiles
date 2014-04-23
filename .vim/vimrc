@@ -146,12 +146,6 @@ nmap <leader>d :Bclose<CR>
 " close all buffers
 nmap <leader>D :bufdo bd<CR>
 
-" Ignore some binary, versioning and backup files when auto-completing
-set wildignore=.svn,CVS,.git,*.swp,*.jpg,*.png,*.gif,*.pdf,*.bak,*source_maps*
-let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
-" Set a lower priority for .old files
-set suffixes+=.old
-
 " rvm-vim automatically as you switch from buffer to buffer
 " :autocmd BufEnter * Rvm
 
@@ -179,19 +173,28 @@ let g:AutoClosePairs = {'(': ')', '{': '}', '[': ']', '"': '"', "'": "'", '#{': 
 let g:AutoCloseProtectedRegions = ["Character"]
 
 " CtrlP
-" nmap <leader>f :CtrlP<cr>
-" nmap <leader>b :CtrlPBuffer<cr>
-" nmap <leader>l :CtrlPMRUFiles<cr>
-" let g:ctrlp_show_hidden = 1
+nmap <leader>f :CtrlP<cr>
+nmap <leader>b :CtrlPBuffer<cr>
+nmap <leader>l :CtrlPMRUFiles<cr>
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+" Ignore some binary, versioning and backup files when auto-completing
+set wildignore=.svn,CVS,.git,*.swp,*.jpg,*.png,*.gif,*.pdf,*.bak,*source_maps*
+let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
+" Set a lower priority for .old files
+set suffixes+=.old
+
 
 " Command-T
-let g:CommandTMaxFiles=2000000
-let g:CommandTMatchWindowAtTop=0
-let g:CommandTMatchWindowReverse=1
-let g:CommandTRefreshMap='<F5>'
-let g:CommandTHighlightColor='Pmenu'
-nmap <leader>f :CommandT<cr>
-nmap <leader>b :CommandTBuffer<cr>
+" let g:CommandTMaxFiles=2000000
+" let g:CommandTMatchWindowAtTop=0
+" let g:CommandTMatchWindowReverse=1
+" let g:CommandTRefreshMap='<F5>'
+" let g:CommandTHighlightColor='Pmenu'
+" nmap <leader>f :CommandT<cr>
+" nmap <leader>b :CommandTBuffer<cr>
 
 " Add settings for tabular
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
@@ -331,10 +334,14 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 map <up> ddkP
 map <down> ddp
-map <left> <nop>
-map <right> <nop>
+map <left> <<
+map <right> >>
+
 vmap <down> dpgp
 vmap <up> dkPgp
+vmap <Left> <gv
+vmap <Right> >gv
+
 imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>

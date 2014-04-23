@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-EXCLUDED_FILES='^(.|.git|..|README.md|bootstrap.sh|.vim)$'
+EXCLUDED_FILES='^(.|.git|.gitignore|..|README.md|bootstrap.sh)$'
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOME_DIR=`cd ~; pwd`
 TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
 BACKUP_FOLDER=$HOME_DIR"/.dotfiles-backups/"$TIMESTAMP
 
 cd $DOTFILES_DIR
-# git pull origin master
 
 function bootstrap() {
   copy_all_files

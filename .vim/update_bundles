@@ -9,10 +9,10 @@ git_bundles = [
   'git://github.com/vim-scripts/DeleteTrailingWhitespace.git',
   'git://github.com/scrooloose/syntastic.git',
   'git://github.com/tpope/vim-rvm.git',
-  # 'git://github.com/kien/ctrlp.vim.git',
+  'git://github.com/kien/ctrlp.vim.git',
+  # 'git://github.com/wincent/Command-T',
   'git://github.com/godlygeek/tabular.git',
   # 'git://github.com/rking/ag.vim.git',
-  'git://github.com/wincent/Command-T',
   'git://github.com/tpope/vim-surround.git',
   'git://github.com/tpope/vim-fugitive',
   # 'git://github.com/sjbach/lusty',
@@ -65,17 +65,18 @@ vim_org_scripts.each do |name, script_id, script_type|
 end
 
 
-puts 'In order to make Command-T work, run:'
-puts '=========================================================================='
-puts ''
-puts 'cd ~/.vim/bundle/Command-T/ruby/command-t'
-puts 'rvm use 1.9.3'
-puts 'make clean'
-puts 'ruby extconf.rb'
-puts 'make'
+# puts 'In order to make Command-T work, run:'
+# puts '=========================================================================='
+# puts ''
+# puts 'cd ~/.vim/bundle/Command-T/ruby/command-t'
+# puts 'rvm use 1.9.3'
+# puts 'make clean'
+# puts 'ruby extconf.rb'
+# puts 'make'
+#
 # puts 'env ARCHFLAGS="-arch x86_64" /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby extconf.rb extconf.rb'
 # puts '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby extconf.rb'
 # puts 'env ARCHFLAGS="-arch x86_64" make'
-
+#
 puts "\n\n\n\n"
 puts "Packages: ack"
