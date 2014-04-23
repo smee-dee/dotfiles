@@ -7,12 +7,34 @@ TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
 BACKUP_FOLDER=$HOME_DIR"/.dotfiles-backups/"$TIMESTAMP
 
 cd $DOTFILES_DIR
+git pull origin master
 
 function bootstrap() {
+  brewify
   copy_all_files
+  source ~/.bash_profile
+}
+
+function brewify() {
+  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+  brew bundle Brewfile
+
+  launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+
+  ln -sfv /usr/local/opt/mysql55/*.plist ~/Library/LaunchAgents
+  launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql55.plist
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql55.plist
+
+  brew link
 }
 
 function copy_all_files() {
+  echo
+  echo "=========================="
+  echo "Start copying all files"
+  echo "=========================="
+	echo
   for file in `ls -a`; do
     [[ $file =~ $(echo $EXCLUDED_FILES) ]] && continue
 
@@ -47,12 +69,7 @@ if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	bootstrap
 else
 	read -p "This may overwrite existing files in your home directory (although they are backed up). Are you sure? (y/n) " -n 1
-	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo
-    echo "=========================="
-    echo "Start copying all files"
-    echo "=========================="
 		bootstrap
 	fi
 fi
