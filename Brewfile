@@ -20,7 +20,7 @@ install vim --override-system-vi
 install macvim --override-system-vim --enable-clipboard
 install homebrew/dupes/grep
 
-install mysql55
+install mysql
 
 install automake
 install autoconf
