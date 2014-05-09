@@ -26,7 +26,12 @@ function brewify() {
   launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql55.plist
   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql55.plist
 
+  ln -sfv /usr/local/opt/php54/*.plist ~/Library/LaunchAgents
+  launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
+
   brew link
+  brew cleanup
 }
 
 function copy_all_files() {
