@@ -22,6 +22,7 @@ install homebrew/dupes/grep
 
 install mysql
 
+install rename
 install automake
 install autoconf
 install imagemagick
