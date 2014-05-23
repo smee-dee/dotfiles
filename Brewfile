@@ -22,6 +22,8 @@ install homebrew/dupes/grep
 
 install mysql
 
+install unrar
+
 install rename
 install automake
 install autoconf
