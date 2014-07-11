@@ -485,3 +485,5 @@ vnoremap . :normal .<CR>
 map <Leader>hash19 ^f:xea:<ESC>ldf>
 map <Leader>hash18 ^f:xbi:<ESC>ea =><ESC>
 
+nmap <Leader>go :GoRun<CR>
+nmap <Leader>got :GoTest<CR>
