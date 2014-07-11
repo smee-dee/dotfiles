@@ -2,8 +2,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-09-17.
-" @Last Change: 2014-02-05.
-" @Revision:    1621
+" @Last Change: 2014-06-25.
+" @Revision:    1654
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
 
@@ -48,12 +48,14 @@ if !exists('g:tcommentOptions')
 endif
 
 if !exists('g:tcomment#options_comments')
-    " Options when using a the 'comments' option.
+    " Additional args for |tcomment#Comment()| when using the 'comments' 
+    " option.
     let g:tcomment#options_comments = {'whitespace': 'both'}   "{{{2
 endif
 
 if !exists('g:tcomment#options_commentstring')
-    " Options when using a the 'commentstring' option.
+    " Additional args for |tcomment#Comment()| when using the 
+    " 'commentstring' option.
     let g:tcomment#options_commentstring = {'whitespace': 'both'}   "{{{2
 endif
 
@@ -346,6 +348,7 @@ call tcomment#DefineType('ada',              '-- %s'            )
 call tcomment#DefineType('apache',           '# %s'             )
 call tcomment#DefineType('asciidoc',         '// %s'            )
 call tcomment#DefineType('asm',              '; %s'             )
+call tcomment#DefineType('asterisk',         '; %s'             )
 call tcomment#DefineType('blade',            '{{-- %s --}}'     )
 call tcomment#DefineType('blade_block',      '{{-- %s --}}'     )
 call tcomment#DefineType('blade_inline',     '{{-- %s --}}'     )
@@ -387,6 +390,7 @@ call tcomment#DefineType('dsl',              '; %s'             )
 call tcomment#DefineType('dustjs',           '{! %s !}'         )
 call tcomment#DefineType('dylan',            '// %s'            )
 call tcomment#DefineType('eiffel',           '-- %s'            )
+call tcomment#DefineType('elixir',           '# %s'             )
 call tcomment#DefineType('erlang',           '%%%% %s'          )
 call tcomment#DefineType('eruby',            '<%%# %s'          )
 call tcomment#DefineType('esmtprc',          '# %s'             )
@@ -418,6 +422,7 @@ call tcomment#DefineType('htmljinja_block', "{%% comment %%}%s{%% endcomment %%}
 call tcomment#DefineType('hy',               '; %s'             )
 call tcomment#DefineType('ini',              '; %s'             ) " php ini (/etc/php5/...)
 call tcomment#DefineType('io',               '// %s'            )
+call tcomment#DefineType('jade',             '// %s'            )
 call tcomment#DefineType('jasmine',          '# %s'             )
 call tcomment#DefineType('java',             '/* %s */'         )
 call tcomment#DefineType('java_block',       g:tcommentBlockC   )
@@ -611,6 +616,8 @@ let s:null_comment_string    = '%s'
 "   R ... right (comment the line right of the cursor)
 "   v ... visual
 "   o ... operator
+"   C ... force comment
+"   U ... force uncomment (if U and C are present, U wins)
 " By default, each line in range will be commented by adding the comment 
 " prefix and postfix.
 function! tcomment#Comment(beg, end, ...)
@@ -652,9 +659,11 @@ function! tcomment#Comment(beg, end, ...)
         endif
         " TLogVAR comment_mode
     endif
-    if exists('s:temp_options') && has_key(s:temp_options, 'mode_extra')
-        let comment_mode = s:AddModeExtra(comment_mode, s:temp_options.mode_extra, lbeg, lend)
-        " TLogVAR comment_mode
+    let mode_extra = s:GetTempOption('mode_extra', '')
+    " TLogVAR mode_extra
+    if !empty(mode_extra)
+        let comment_mode = s:AddModeExtra(comment_mode, mode_extra, lbeg, lend)
+        " TLogVAR "mode_extra", comment_mode
         unlet s:temp_options.mode_extra
     endif
     " get the correct commentstring
@@ -730,9 +739,12 @@ function! tcomment#Comment(beg, end, ...)
     " echom "DBG" string(s:cdef)
     let cbeg = get(s:cdef, 'col', cbeg)
     " TLogVAR cbeg
-    if comment_anyway
+    if mode_extra =~# 'U'
+        let uncomment = 1
+    elseif mode_extra =~# 'C' || comment_anyway
         let uncomment = 0
     endif
+    " TLogVAR comment_anyway, mode_extra, uncomment
     " go
     " TLogVAR comment_mode
     if comment_mode =~# 'B'
@@ -821,6 +833,15 @@ else
         return strlen(substitute(a:string, ".", "x", "g"))
     endf
 endif
+
+
+function! s:GetTempOption(name, default) "{{{3
+    if exists('s:temp_options') && has_key(s:temp_options, a:name)
+        return s:temp_options[a:name]
+    else
+        return a:default
+    endif
+endf
 
 
 function! tcomment#SetOption(name, arg) "{{{3

@@ -1073,7 +1073,7 @@ function! rails#new_app_command(bang,...) abort
   return ''
 endfunction
 
-function! s:app_tags_command() dict
+function! s:app_tags_command() dict abort
   if exists("g:Tlist_Ctags_Cmd")
     let cmd = g:Tlist_Ctags_Cmd
   elseif executable("exuberant-ctags")
@@ -1090,8 +1090,19 @@ function! s:app_tags_command() dict
     call s:error("ctags not found")
     return ''
   endif
-  let args = s:split(get(g:, 'rails_ctags_arguments', '--languages=-javascript'))
-  exe '!'.cmd.' -f '.s:escarg(self.path("tags")).' -R --langmap="ruby:+.rake.builder.jbuilder.rjs" '.join(args,' ').' '.s:escarg(self.path())
+  let cd = exists('*haslocaldir') && haslocaldir() ? 'lcd' : 'cd'
+  let cwd = getcwd()
+  try
+    execute cd fnameescape(self.path())
+    if self.has_path('.ctags')
+      let args = []
+    else
+      let args = s:split(get(g:, 'rails_ctags_arguments', '--languages=ruby'))
+    endif
+    exe '!'.cmd.' -f '.s:escarg(self.path("tags")).' -R '.join(args,' ')
+  finally
+    execute cd fnameescape(cwd)
+  endtry
   return ''
 endfunction
 
@@ -1802,8 +1813,8 @@ function! s:app_server_command(bang,arg) dict
 endfunction
 
 function! s:color_efm(pre, before, after)
-   return a:pre . '%\S%#  %#' . a:before . "\e[0m  %#" . a:after . ',' .
-         \ a:pre . '   %#'.a:before.' %#'.a:after . ','
+   return a:pre . '%\S%\+  %#' . a:before . "\e[0m  %#" . a:after . ',' .
+         \ a:pre . '%\s %#'.a:before.'  %#'.a:after . ','
 endfunction
 
 let s:efm_generate =
@@ -1813,6 +1824,7 @@ let s:efm_generate =
       \ s:color_efm('%-G', 'create', ' ') .
       \ s:color_efm('%-G', 'exist', ' ') .
       \ s:color_efm('Overwrite%.%#', '%m', '%f') .
+      \ s:color_efm('', '%m', '   %f') .
       \ s:color_efm('', '%m', '%f') .
       \ '%-G%.%#'
 
@@ -1826,17 +1838,17 @@ function! s:app_generator_command(bang,...) dict
     let &l:makeprg = self.prepare_rails_command(cmd)
     let &l:errorformat = s:efm_generate
     call s:push_chdir(1)
-    if a:bang
-      make!
-    else
-      make
-    endif
+    noautocmd make!
   finally
     call s:pop_command()
     let &l:errorformat = old_errorformat
     let &l:makeprg = old_makeprg
   endtry
-  return ''
+  if a:bang || empty(getqflist())
+    return ''
+  else
+    return 'cfirst'
+  endif
 endfunction
 
 call s:add_methods('app', ['generators','script_command','output_command','server_command','generator_command'])
@@ -2799,7 +2811,7 @@ endfunc
 
 let s:view_types = split('rhtml,erb,rxml,builder,rjs,haml',',')
 
-function! s:readable_resolve_view(name,...) dict abort
+function! s:readable_resolve_view(name, ...) dict abort
   let name = a:name
   let pre = 'app/views/'
   if name !~# '/'
@@ -2808,7 +2820,9 @@ function! s:readable_resolve_view(name,...) dict abort
       let name = controller.'/'.name
     endif
   endif
-  if name =~# '\.\w\+\.\w\+$' || name =~# '\.\%('.join(s:view_types,'\|').'\)$'
+  if name =~# '/' && !self.app().has_path(fnamemodify('app/views/'.name, ':h'))
+    return ''
+  elseif name =~# '\.\w\+\.\w\+$' || name =~# '\.\%('.join(s:view_types,'\|').'\)$'
     return pre.name
   else
     for format in ['.'.self.format(a:0 ? a:1 : 0), '']
@@ -2845,7 +2859,7 @@ function! s:findlayout(name)
   return rails#buffer().resolve_layout(a:name, line('.'))
 endfunction
 
-function! s:viewEdit(cmd,...)
+function! s:viewEdit(cmd, ...) abort
   if a:0 && a:1 =~ '^[^!#:]'
     let view = matchstr(a:1,'[^!#:]*')
   elseif rails#buffer().type_name('controller','mailer')
@@ -2865,12 +2879,16 @@ function! s:viewEdit(cmd,...)
   endif
   let found = rails#buffer().resolve_view(view, line('.'))
   let djump = a:0 ? matchstr(a:1,'!.*\|#\zs.*\|:\zs\d*\ze\%(:in\)\=$') : ''
-  if found != ''
+  if !empty(found)
     call s:edit(a:cmd,found)
     call s:djump(djump)
     return ''
   elseif a:0 && a:1 =~# '!'
-    call s:edit(a:cmd,'app/views/'.view)
+    let file = 'app/views/'.view
+    if !rails#app().has_path(fnamemodify(file, ':h'))
+      call mkdir(rails#app().path(fnamemodify(file, ':h')), 'p')
+    endif
+    call s:edit(a:cmd, file)
     call s:djump(djump)
     return ''
   else
@@ -3261,13 +3279,27 @@ function! s:readable_alternate_candidates(...) dict abort
     return ['app/helpers/application_helper.rb']
   elseif f =~# 'spec\.js$'
     return [s:sub(s:sub(f, 'spec/javascripts', 'app/assets/javascripts'), '_spec.js', '.js')."\n"]
+  elseif f =~# 'spec\.coffee$'
+    return [s:sub(s:sub(f, 'spec/javascripts', 'app/assets/javascripts'), '_spec.coffee', '.coffee')."\n"]
+  elseif f =~# 'spec\.js\.coffee$'
+    return [s:sub(s:sub(f, 'spec/javascripts', 'app/assets/javascripts'), '_spec.js.coffee', '.js.coffee')."\n"]
   elseif self.type_name('javascript')
     if f =~ 'public/javascripts'
       let to_replace = 'public/javascripts'
     else
       let to_replace = 'app/assets/javascripts'
     endif
-    return [s:sub(s:sub(f, to_replace, 'spec/javascripts'), '.js', '_spec.js')."\n"]
+    if f =~ '.coffee.js$'
+      let suffix = '.coffee.js'
+      let suffix_replacement = '_spec.coffee.js'
+    elseif f =~ '.coffee$'
+      let suffix = '.coffee'
+      let suffix_replacement = '_spec.coffee'
+    else
+      let suffix = '.js'
+      let suffix_replacement = '_spec.js'
+    endif
+    return [s:sub(s:sub(f, to_replace, 'spec/javascripts'), suffix, suffix_replacement)."\n"]
   elseif self.type_name('db-schema') || f =~# '^db/\w*structure.sql$'
     return ['db/seeds.rb']
   elseif f ==# 'db/seeds.rb'

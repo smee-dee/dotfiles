@@ -30,7 +30,8 @@ git_bundles = [
   'git://github.com/AndrewRadev/vim-eco',
   'git://github.com/joequery/Stupid-EasyMotion',
   'git@github.com:briancollins/vim-jst.git',
-  'https://github.com/airblade/vim-rooter'
+  'https://github.com/airblade/vim-rooter',
+  'https://github.com/fatih/vim-go'
 ]
 
 vim_org_scripts = [
