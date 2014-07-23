@@ -257,6 +257,8 @@ let Tlist_Ctags_Cmd = 'ctags'
 " https://rvm.beginrescueend.com/integration/vim/
 set shell=/bin/bash\ -l
 
+set lazyredraw
+
 " Finally, load custom configs
 if filereadable($HOME . '.vimrc.local')
   source ~/.vimrc.local
