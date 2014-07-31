@@ -54,6 +54,15 @@ git_bundles.each do |url|
   dir = url.split('/').last.sub(/\.git$/, '')
   puts "unpacking #{url} into #{dir}"
   `git clone #{url} #{dir}`
+
+  if dir == 'YouCompleteMe'
+    FileUtils.cd(dir)
+    `git submodule update --init --recursive`
+    `./install.sh`
+    `find . -name ".git"|xargs rm -rf`
+    # `./install.sh --clang-completer`
+  end
+
   FileUtils.rm_rf(File.join(dir, ".git"))
 end
 
@@ -65,20 +74,3 @@ vim_org_scripts.each do |name, script_id, script_type|
     file << open("http://www.vim.org/scripts/download_script.php?src_id=#{script_id}").read
   end
 end
-
-
-# puts 'In order to make Command-T work, run:'
-# puts '=========================================================================='
-# puts ''
-# puts 'cd ~/.vim/bundle/Command-T/ruby/command-t'
-# puts 'rvm use 1.9.3'
-# puts 'make clean'
-# puts 'ruby extconf.rb'
-# puts 'make'
-#
-# puts 'env ARCHFLAGS="-arch x86_64" /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby extconf.rb extconf.rb'
-# puts '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby extconf.rb'
-# puts 'env ARCHFLAGS="-arch x86_64" make'
-#
-puts "\n\n\n\n"
-puts "Packages: ack"
