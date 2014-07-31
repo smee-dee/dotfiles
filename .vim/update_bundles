@@ -31,8 +31,7 @@ git_bundles = [
   'git://github.com/joequery/Stupid-EasyMotion',
   'git@github.com:briancollins/vim-jst.git',
   'https://github.com/airblade/vim-rooter',
-  'https://github.com/fatih/vim-go',
-  'git@github.com:Valloric/YouCompleteMe.git'
+  'https://github.com/fatih/vim-go'
 ]
 
 vim_org_scripts = [
