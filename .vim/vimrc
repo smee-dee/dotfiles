@@ -489,3 +489,10 @@ map <Leader>hash18 ^f:xbi:<ESC>ea =><ESC>
 
 nmap <Leader>go :GoRun<CR>
 nmap <Leader>got :GoTest<CR>
+
+" typing (; it will do (|);
+autocmd FileType javascript inoremap (; ();<Esc>hi)
+
+" new line between braces
+autocmd FileType javascript inoremap {<CR> {<CR>}<Esc><S-o>}
+autocmd FileType php inoremap {<CR> {<CR>}<Esc><S-o>}

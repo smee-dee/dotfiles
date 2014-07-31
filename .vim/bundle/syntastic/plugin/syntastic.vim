@@ -19,12 +19,12 @@ if has('reltime')
     lockvar! g:syntastic_start
 endif
 
-let g:syntastic_version = '3.4.0-93'
+let g:syntastic_version = '3.4.0-116'
 lockvar g:syntastic_version
 
 " Sanity checks {{{1
 
-for s:feature in ['autocmd', 'eval', 'modify_fname', 'quickfix', 'user_commands']
+for s:feature in ['autocmd', 'eval', 'modify_fname', 'quickfix', 'reltime', 'user_commands']
     if !has(s:feature)
         call syntastic#log#error("need Vim compiled with feature " . s:feature)
         finish
@@ -65,10 +65,11 @@ let g:syntastic_defaults = {
         \ 'filetype_map':             {},
         \ 'full_redraws':             !(has('gui_running') || has('gui_macvim')),
         \ 'id_checkers':              1,
+        \ 'ignore_extensions':        '\c\v^([gx]?z|lzma|bz2)$',
         \ 'ignore_files':             [],
         \ 'loc_list_height':          10,
         \ 'quiet_messages':           {},
-        \ 'reuse_loc_lists':          (v:version >= 704),
+        \ 'reuse_loc_lists':          0,
         \ 'sort_aggregated_errors':   1,
         \ 'stl_format':               '[Syntax: line:%F (%t)]',
         \ 'style_error_symbol':       'S>',
@@ -167,7 +168,7 @@ command! -nargs=* -complete=custom,s:CompleteCheckerName SyntasticCheck
             \ call syntastic#util#redraw(g:syntastic_full_redraws)
 command! Errors call s:ShowLocList()
 command! -nargs=? -complete=custom,s:CompleteFiletypes SyntasticInfo
-            \ call s:modemap.echoMode() |
+            \ call s:modemap.modeInfo(<f-args>) |
             \ call s:registry.echoInfoFor(s:resolveFiletypes(<f-args>))
 command! SyntasticReset
             \ call s:ClearCache() |
@@ -237,6 +238,11 @@ endfunction " }}}2
 
 "refresh and redraw all the error info for this buf when saving or reading
 function! s:UpdateErrors(auto_invoked, ...) " {{{2
+    call syntastic#log#debugShowVariables(g:SyntasticDebugTrace, 'version')
+    call syntastic#log#debugShowOptions(g:SyntasticDebugTrace, s:debug_dump_options)
+    call syntastic#log#debugDump(g:SyntasticDebugVariables)
+    call syntastic#log#debug(g:SyntasticDebugTrace, 'UpdateErrors' . (a:auto_invoked ? ' (auto)' : '') .
+        \ ': ' . (a:0 ? join(a:000) : 'default checkers'))
     if s:skipFile()
         return
     endif
@@ -288,14 +294,13 @@ endfunction " }}}2
 
 "detect and cache all syntax errors in this buffer
 function! s:CacheErrors(checker_names) " {{{2
+    call syntastic#log#debug(g:SyntasticDebugTrace, 'CacheErrors: ' .
+        \ (len(a:checker_names) ? join(a:checker_names) : 'default checkers'))
     call s:ClearCache()
     let newLoclist = g:SyntasticLoclist.New([])
 
     if !s:skipFile()
         " debug logging {{{3
-        call syntastic#log#debugShowVariables(g:SyntasticDebugTrace, 'version')
-        call syntastic#log#debugShowOptions(g:SyntasticDebugTrace, s:debug_dump_options)
-        call syntastic#log#debugDump(g:SyntasticDebugVariables)
         call syntastic#log#debugShowVariables(g:SyntasticDebugTrace, 'aggregate_errors')
         call syntastic#log#debug(g:SyntasticDebugTrace, 'getcwd() = ' . getcwd())
         " }}}3
@@ -376,7 +381,6 @@ function! s:CacheErrors(checker_names) " {{{2
         endif
     endif
 
-    call newLoclist.setOwner(bufnr(''))
     call newLoclist.deploy()
 endfunction " }}}2
 
@@ -550,9 +554,14 @@ endfunction " }}}2
 
 " Skip running in special buffers
 function! s:skipFile() " {{{2
-    let force_skip = exists('b:syntastic_skip_checks') ? b:syntastic_skip_checks : 0
     let fname = expand('%')
-    return force_skip || (&buftype != '') || !filereadable(fname) || getwinvar(0, '&diff') || s:ignoreFile(fname)
+    let skip = (exists('b:syntastic_skip_checks') ? b:syntastic_skip_checks : 0) ||
+        \ (&buftype != '') || !filereadable(fname) || getwinvar(0, '&diff') ||
+        \ s:ignoreFile(fname) || fnamemodify(fname, ':e') =~? g:syntastic_ignore_extensions
+    if skip
+        call syntastic#log#debug(g:SyntasticDebugTrace, 'skipFile: skipping')
+    endif
+    return skip
 endfunction " }}}2
 
 " Take a list of errors and add default values to them from a:options
