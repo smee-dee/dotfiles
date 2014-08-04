@@ -50,5 +50,6 @@ install sqlmap
 install tree
 install webkit2png
 install zopfli
+install coreutils
 
 cleanup
