@@ -291,7 +291,8 @@ set background=dark
 color blackboard
 " colorscheme ir_black
 colorscheme tir_black
-" hi CursorLine cterm=NONE ctermbg=59 ctermfg=white guibg=darkred guifg=white
+hi CursorLine guibg=gray15
+" hi CursorLine cterm=NONE ctermbg=59 ctermfg=white guibg=gray30 guifg=white
 " highlight clear SignColumn
 " highlight VertSplit    ctermbg=236
 " highlight ColorColumn  ctermbg=237
