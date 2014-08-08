@@ -1,0 +1,26 @@
+# export GOPATH=$HOME/code/go
+export GOPATH="/Users/schmiddi/code/go"
+# export GOROOT="/Users/schmiddi/code/go"
+export PATH=$PATH:/usr/local/Cellar/go/1.3/bin:/Users/schmiddi/code/go/bin
+
+# MacPorts Installer addition on 2011-01-19_at_09:50:02: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# export CC=/usr/bin/gcc-4.2
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+export EDITOR="/usr/bin/vi"
+export PATH=$PATH:/Users/schmiddi/.gem/ruby/1.8/bin:~/bin:./i:./vendor/bin
+export PATH=$PATH:./
+
+QTDIR=/opt/local/lib/qt3;
+export QTDIR
+export PATH=/usr/local/Cellar/php/5.3.10/bin:$PATH
+
+export PATH=$PATH:$(brew --prefix mysql)/bin
+
+# export CC=/usr/local/bin/gcc-4.9
+# export CPP=/usr/local/bin/cpp-4.9
+# export CXX=/usr/local/bin/g++-4.9
+source ~/.git-completion.bash
+source ~/.profile
+export PATH=/usr/local/bin:$PATH

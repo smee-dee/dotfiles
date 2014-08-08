@@ -1,0 +1,10 @@
+alias kpwp='ssh ssh-216511-admin@content.kaeuferportal.de'
+alias be='bundle exec'
+alias flushdns='dscacheutil -flushcache'
+alias composer="php54 /usr/bin/composer.phar"
+alias rubocop="bundle exec rubocop"
+alias composer="php /usr/bin/composer.phar"
+alias gotest="$GOPATH/bin/goconvey"
+alias cdcms="cd ~/code/kaeuferportal/cms"
+alias cdfe="cd ~/code/kaeuferportal/fe"
+alias cdbe="cd ~/code/kaeuferportal/be"
