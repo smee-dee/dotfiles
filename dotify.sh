@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-EXCLUDED_FILES='^(.|.git|.gitignore|..|README.md|update.sh|brewify.sh)$'
+EXCLUDED_FILES='^(.|.git|.gitignore|..|README.md|update.sh|brewify.sh|dotify.sh)$'
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOME_DIR=`cd ~; pwd`
 TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
