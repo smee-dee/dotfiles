@@ -22,7 +22,7 @@ git_bundles = [
   'git://github.com/tpope/vim-bundler.git',
   'git://github.com/t9md/vim-chef.git',
   'git://github.com/kchmck/vim-coffee-script.git',
-  'git://github.com/othree/javascript-libraries-syntax.vim.git',
+  # 'git://github.com/othree/javascript-libraries-syntax.vim.git',
   'git://github.com/cakebaker/scss-syntax.vim.git',
   'git@github.com:thoughtbot/vim-rspec.git',
   'git@github.com:ngmy/vim-rubocop.git',
