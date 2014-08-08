@@ -330,7 +330,6 @@ map ,t <Esc>:tabnew<CR>
 map ,tf <Esc>:tabf<Space>
 
 execute pathogen#infect()
-execute pathogen#infect()
 " autocmd vimenter * NERDTree
 " map ,nt <Esc>:NERDTree<CR>:NERDTreeMirror<CR>
 " let g:NERDTreeWinSize = 40
