@@ -1,0 +1,36 @@
+[user]
+	name = Stefan Schmidt
+	email = stefan.schmidt@kaeuferportal.de
+[alias]
+  br = branch
+  ci = commit
+  co = checkout
+  df = diff
+  rb = rebase
+  st = status
+  sa = stash
+  mt = mergetool
+  cp = cherry-pick
+  sm = submodule
+  pl = pull --rebase
+  ps = push
+[core]
+	excludesfile = /Users/schmiddi/.gitignore_global
+  mergeoptions = "--no-edit"
+	precomposeunicode = false
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[push]
+	default = simple
+[color]
+	ui = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+	ui = true
+	ui = true
