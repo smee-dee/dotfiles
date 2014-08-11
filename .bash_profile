@@ -1,6 +1,6 @@
-source .paths
-source .bash_config
-source .aliases
+source ~/.paths
+source ~/.bash_config
+source ~/.aliases
 source ~/.git-completion.bash
 
 ssh-add
