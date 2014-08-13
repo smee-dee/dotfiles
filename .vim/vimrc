@@ -460,9 +460,6 @@ map <Leader>l :call RunLastSpec()<CR>
 " map <Leader>a :call RunAllSpecs()<CR>
 
 imap jj <esc>
-imap Jj <esc>
-imap jJ <esc>
-imap JJ <esc>
 vmap v <esc>
 
 " popup menu behavior
@@ -500,3 +497,5 @@ inoremap (; ();<ESC>hi
 " new line between braces
 inoremap {<CR>  {<CR>}<Esc>O
 inoremap %><CR> %><CR><% end %><Esc>O
+
+map <Leader>single ^/do<cr>cw{<esc>lxJJwcw}<esc>^
