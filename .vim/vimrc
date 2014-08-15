@@ -499,3 +499,4 @@ inoremap {<CR>  {<CR>}<Esc>O
 inoremap %><CR> %><CR><% end %><Esc>O
 
 map <Leader>single ^/do<cr>cw{<esc>lxJJwcw}<esc>^
+map <Leader>pry Obinding.pry<esc>
