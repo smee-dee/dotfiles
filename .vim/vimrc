@@ -291,7 +291,7 @@ set background=dark
 color blackboard
 " colorscheme ir_black
 colorscheme tir_black
-hi CursorLine guibg=gray15
+hi CursorLine guibg=gray13 gui=underline
 autocmd InsertEnter * highlight  CursorLine guibg=gray10
 autocmd InsertLeave * highlight  CursorLine guibg=gray15
 
