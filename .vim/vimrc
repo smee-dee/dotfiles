@@ -499,6 +499,6 @@ inoremap (; ();<ESC>hi
 inoremap {<CR>  {<CR>}<Esc>O
 inoremap %><CR> %><CR><% end %><Esc>O
 
-map <Leader>single /end<cr>?do<cr>cw{<esc>lxJJwcw}<esc>^
+map <Leader>single /end<cr>?do<cr>cw{<esc>lxJJ/end<cr>cw}<esc>^
 map <Leader>multi ^/{<cr>sdo<cr><esc>/}<cr>s<cr>end<esc>
 map <Leader>pry Obinding.pry<esc>
