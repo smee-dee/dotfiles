@@ -7,7 +7,7 @@ TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
 BACKUP_FOLDER=$HOME_DIR"/.dotfiles-backups/"$TIMESTAMP
 
 cd $DOTFILES_DIR
-git pull origin master
+# git pull origin master
 
 function bootstrap() {
   copy_all_files
