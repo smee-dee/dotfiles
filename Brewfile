@@ -35,6 +35,7 @@ install sqlite
 install the_silver_searcher
 install readline
 install git
+install bash-completion2
 install redis
 install mongodb
 install imagemagick --with-webp
