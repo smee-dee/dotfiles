@@ -4,7 +4,7 @@ FOLDER=`pwd`
 
 sudo echo "Restarting..."
 
-cd ~/bin
+cd ~/.bin
 ./stop_servers && ./start_servers
 
 cd $FOLDER
