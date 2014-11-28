@@ -1,0 +1,20 @@
+#!/bin/bash --login
+
+FOLDER=`pwd`
+
+sudo echo "Stopping..."
+ps aux|grep rails|awk '{print $2}'|xargs kill -9 2> /dev/null
+
+sudo launchctl unload -w /Library/LaunchAgents/homebrew.mxcl.nginx.plist
+
+launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
+
+launchctl unload ~/Library/LaunchAgents/homebrew-php.josegonzalez.php53.plist
+
+launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+
+# launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+
+launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+
+cd $FOLDER

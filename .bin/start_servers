@@ -1,0 +1,37 @@
+#!/bin/bash --login
+
+FOLDER=`pwd`
+
+sudo echo "Starting..."
+
+echo "==================================="
+echo "Starting Käuferportal Forms Service"
+echo "==================================="
+cd ~/code/kaeuferportal/forms_service
+nohup rails s -p 5001 >> log/nohup.log 2>&1 &
+
+echo "=============================="
+echo "Starting Käuferportal Frontend"
+echo "=============================="
+cd ~/code/kaeuferportal/frontend
+nohup rails s -p 5010 >> log/nohup.log 2>&1  &
+
+echo "========================="
+echo "Starting Käuferportal CMS"
+echo "========================="
+cd ~/code/kaeuferportal/cms
+nohup rails s -p 5000 >> log/nohup.log 2>&1 &
+
+sudo launchctl load -w /Library/LaunchAgents/homebrew.mxcl.nginx.plist
+
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
+
+launchctl load ~/Library/LaunchAgents/homebrew-php.josegonzalez.php53.plist
+
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+
+# launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+
+cd $FOLDER

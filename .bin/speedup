@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo ipfw pipe 1 delete
+sudo ipfw delete 1
+
+echo "Now the speed is normal"

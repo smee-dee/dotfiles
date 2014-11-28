@@ -1,0 +1,10 @@
+#!/bin/bash --login
+
+FOLDER=`pwd`
+
+sudo echo "Restarting..."
+
+cd ~/bin
+./stop_servers && ./start_servers
+
+cd $FOLDER

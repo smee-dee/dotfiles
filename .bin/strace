@@ -1,0 +1,2 @@
+#!/bin/sh
+dtruss -f -t open $@

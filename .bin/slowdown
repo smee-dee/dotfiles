@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo ipfw pipe 1 config bw 64KByte/s
+sudo ipfw add 1 pipe 1 ip from any to any
+
+echo "Now the speed is 64Kbyte/s"
