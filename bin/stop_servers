@@ -17,4 +17,8 @@ launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
 
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 
+# killall -9 php-fpm 2> /dev/null
+
+ps aux|grep "php -S"|awk '{print $2}'|xargs kill -9 2> /dev/null
+
 cd $FOLDER
