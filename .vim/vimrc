@@ -502,3 +502,6 @@ inoremap %><CR> %><CR><% end %><Esc>O
 map <Leader>single / end<cr>? do<cr>lcw{<esc>lxJJ/end<cr>cw}<esc>^
 map <Leader>multi ^/{<cr>sdo<cr><esc>/}<cr>s<cr>end<esc>
 map <Leader>pry Obinding.pry<esc>
+
+" syntax for file types
+au BufRead,BufNewFile *.hamlc setfiletype haml
