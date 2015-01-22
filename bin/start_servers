@@ -8,19 +8,25 @@ echo "==================================="
 echo "Starting Käuferportal Forms Service"
 echo "==================================="
 cd ~/code/kaeuferportal/forms_service
-nohup rails s -p 5001 >> log/nohup.log 2>&1 &
+nohup bundle exec rails s -p 5001 >> log/nohup.log 2>&1 &
 
 echo "=============================="
 echo "Starting Käuferportal Frontend"
 echo "=============================="
 cd ~/code/kaeuferportal/frontend
-nohup rails s -p 5010 >> log/nohup.log 2>&1  &
+nohup bundle exec rails s -p 5010 >> log/nohup.log 2>&1  &
+
+echo "=============================="
+echo "Starting Käuferportal Backend"
+echo "=============================="
+cd ~/code/kaeuferportal/backend
+nohup bundle exec rails s -p 5030 >> log/nohup.log 2>&1  &
 
 echo "========================="
 echo "Starting Käuferportal CMS"
 echo "========================="
 cd ~/code/kaeuferportal/cms
-nohup rails s -p 5000 >> log/nohup.log 2>&1 &
+nohup bundle exec rails s -p 5000 >> log/nohup.log 2>&1 &
 
 echo "========================="
 echo "Starting KP Ratgeber"
