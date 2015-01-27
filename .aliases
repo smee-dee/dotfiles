@@ -1,5 +1,5 @@
 /* alias kpwp='ssh ssh-216511-admin@content.kaeuferportal.de' */
-alias kpwp='ssh ssh-216511-admin@80.67.30.215'
+alias kpwp='ssh ssh-216511-admin@unternehmen.kaeuferportal.de'
 alias be='bundle exec'
 alias flushdns='dscacheutil -flushcache'
 alias composer="php54 /usr/bin/composer.phar"
