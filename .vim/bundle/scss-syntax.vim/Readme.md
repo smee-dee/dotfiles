@@ -8,12 +8,12 @@ I recommend to use a plugin manager like [Vundle](https://github.com/gmarik/vund
 
 Open your `~/.vimrc` file and add the following line(s):
 
-```
-Bundle 'JulesWang/css.vim' // only necessary if your Vim version < 7.4
-Bundle 'cakebaker/scss-syntax.vim'
+```vim
+Plugin 'JulesWang/css.vim' " only necessary if your Vim version < 7.4
+Plugin 'cakebaker/scss-syntax.vim'
 ```
 
-Afterwards, run `:BundleInstall` in Vim.
+Afterwards, run `:PluginInstall` in Vim.
 
 ### Manual
 
@@ -25,12 +25,26 @@ Afterwards, run `:BundleInstall` in Vim.
 
 Usually no configuration is necessary.
 
+### CSS3
+
+For highlighting CSS elements, this plugin relies on `css.vim` that comes bundled with Vim. Unfortunately, it's support for CSS3 is only rudimentary. To avoid highlighting issues I recommend to install the [vim-css3-syntax](https://github.com/hail2u/vim-css3-syntax) plugin.
+
 ### Filetype
 
 In some cases you might want to change the filetype from `scss` to `scss.css`, for example, if you want to use [SnipMate](https://github.com/garbas/vim-snipmate)'s CSS snippets within your SCSS files. In this case, add the following line to your `~/.vimrc` file:
 
-```
+```vim
 au BufRead,BufNewFile *.scss set filetype=scss.css
 ```
 
 Please be aware that this setting can cause problems with other plugins as mentioned in [#41](https://github.com/cakebaker/scss-syntax.vim/pull/41).
+
+### Function names starting with a keyword
+
+Function names starting with a keyword (e.g. `baseline-unit()`) are not highlighted correctly by default. It can be fixed by adding the following line to your `~/.vimrc` file:
+
+```vim
+autocmd FileType scss set iskeyword+=-
+```
+
+Please be aware that this setting also affects the behavior of the motion keys.
