@@ -32,7 +32,6 @@ git_bundles = [
   'git@github.com:briancollins/vim-jst.git',
   'https://github.com/airblade/vim-rooter',
   'https://github.com/fatih/vim-go',
-  'git@github.com:kchmck/vim-coffee-script.git'
 ]
 
 vim_org_scripts = [
