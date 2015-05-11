@@ -1,8 +1,9 @@
-source ~/code/kp/tools/frontend-config/dotfiles/.paths-frontend 2> /dev/null
 source ~/.paths
 source ~/.bash_config
 source ~/.aliases
 source ~/.git-completion.bash
+
+source ~/code/kp/tools/frontend-config/dotfiles/.paths-frontend 2> /dev/null
 
 ssh-add
 
