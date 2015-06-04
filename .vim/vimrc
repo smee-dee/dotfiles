@@ -130,6 +130,9 @@ nmap N Nzz
 " nnoremap <leader>a :Ack
 nmap <leader>a :tab :split<CR>:Ack
 nmap <leader>A :tab :split<CR>:Ack <C-r><C-w><CR>
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " AG
 " nnoremap <leader>a :Ack

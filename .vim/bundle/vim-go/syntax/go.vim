@@ -52,7 +52,7 @@ if !exists("g:go_highlight_trailing_whitespace_error")
 endif
 
 if !exists("g:go_highlight_operators")
-	let g:go_highlight_operators = 1
+	let g:go_highlight_operators = 0
 endif
 
 if !exists("g:go_highlight_functions")
@@ -236,13 +236,11 @@ hi def link     goTodo              Todo
 
 " Operators; 
 if g:go_highlight_operators != 0
-	" match single-char operators:          - + % < > ! & | ^ =
-	" and corresponding two-char operators: -= += %= <= >= != &= |= ^= ==
-	syn match goOperator /[-+%<>!&|\^=]=\?/
-	" match * and *=
-	syn match goOperator /[^\/]\zs\*=\?/
+	" match single-char operators:          - + % < > ! & | ^ * =
+	" and corresponding two-char operators: -= += %= <= >= != &= |= ^= *= ==
+	syn match goOperator /[-+%<>!&|^*=]=\?/
 	" match / and /=
-	syn match goOperator /\/\%(=\|\ze[^\/\*]\)/
+	syn match goOperator /\/\%(=\|\ze[^/*]\)/
 	" match two-char operators:               << >> &^
 	" and corresponding three-char operators: <<= >>= &^=
 	syn match goOperator /\%(<<\|>>\|&^\)=\?/
