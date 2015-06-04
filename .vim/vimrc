@@ -67,8 +67,8 @@ set undofile
 
 
 " Auto adjust window sizes when they become current
-" set winwidth=84
-" set winheight=5
+set winwidth=83
+set winheight=15
 " set winminheight=5
 " set winheight=999
 
