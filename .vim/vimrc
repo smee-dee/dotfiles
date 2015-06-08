@@ -182,7 +182,7 @@ nmap <leader>l :CtrlPMRUFiles<cr>
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_files = 9999999
-let g:ctrlp_lazy_update = 0
+let g:ctrlp_lazy_update = 1
 " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|public/assets\|public/cached-assets\|public/cms-assets\|public/assets/source_maps\|doc'
 " let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/assets\|public\/cms-assets\|public\/cached-assets\|public\/system\|data\|log\|tmp$'
