@@ -19,3 +19,4 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias fetch-and-rebase="git fetch && git rebase origin/master && git rebase -i origin/master"
+alias ls='ls -G'
