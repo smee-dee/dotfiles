@@ -33,7 +33,8 @@ git_bundles = [
   'https://github.com/airblade/vim-rooter',
   'https://github.com/fatih/vim-go',
   # 'git@github.com:scrooloose/nerdtree.git',
-  'git@github.com:pbrisbin/vim-mkdir.git'
+  'git@github.com:pbrisbin/vim-mkdir.git',
+  'https://github.com/FelikZ/ctrlp-py-matcher'
 ]
 
 vim_org_scripts = [
