@@ -1,6 +1,5 @@
-[user]
-	name = Stefan Schmidt
-	email = stefan.schmidt@kaeuferportal.de
+[include]
+  path = ~/.gituser
 [alias]
   br = branch
   ci = commit
