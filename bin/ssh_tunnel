@@ -1,0 +1,11 @@
+#!/bin/bash
+
+HOST=$1
+PORT1=$2
+PORT2=$3
+
+if [[ -z "$PORT2" ]]; then
+  PORT2=$PORT1
+fi
+
+ssh $HOST -L $PORT1:localhost:$PORT2 -N
