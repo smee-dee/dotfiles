@@ -13,6 +13,8 @@ install gnu-sed --default-names
 # Install Bash 4
 install bash
 
+install cmake
+
 # Install wget with IRI support
 install wget --enable-iri
 
