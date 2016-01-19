@@ -390,7 +390,8 @@ set hls!
 map <leader>sf <Esc>:FufCoverageFile<CR>
 map <leader>sl <Esc>:FufLine<CR>
 
-let g:syntastic_ruby_exec = 'ruby19'
+" let g:syntastic_ruby_exec = 'ruby19'
+let g:syntastic_haml_checkers = ['haml_lint']
 
 au BufRead,BufNewFile *.tpl set filetype=smarty
 map <leader>utf8 muggO<Esc>O# -*- encoding : utf-8 -*-<Esc>`uk<CR>
