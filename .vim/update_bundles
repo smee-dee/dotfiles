@@ -15,12 +15,12 @@ git_bundles = [
   'git://github.com/godlygeek/tabular.git',
   # 'git://github.com/rking/ag.vim.git',
   'git://github.com/tpope/vim-surround.git',
-  'git://github.com/tpope/vim-fugitive',
+  # 'git://github.com/tpope/vim-fugitive',
   # 'git://github.com/sjbach/lusty',
   'git://github.com/tpope/vim-rails.git',
   'git://github.com/tpope/vim-haml.git',
   'git://github.com/tpope/vim-markdown.git',
-  'git://github.com/tpope/vim-bundler.git',
+  # 'git://github.com/tpope/vim-bundler.git',
   # 'git://github.com/t9md/vim-chef.git',
   'git://github.com/kchmck/vim-coffee-script.git',
   # 'git://github.com/othree/javascript-libraries-syntax.vim.git',
@@ -29,7 +29,7 @@ git_bundles = [
   # 'git@github.com:ngmy/vim-rubocop.git',
   'git@github.com:mileszs/ack.vim.git',
   'git://github.com/AndrewRadev/vim-eco',
-  'git://github.com/joequery/Stupid-EasyMotion',
+  # 'git://github.com/joequery/Stupid-EasyMotion',
   'git@github.com:briancollins/vim-jst.git',
   'https://github.com/airblade/vim-rooter',
   'https://github.com/fatih/vim-go',
@@ -38,9 +38,10 @@ git_bundles = [
   'https://github.com/FelikZ/ctrlp-py-matcher'
 ]
 
-vim_org_scripts = [
-  ["IndexedSearch", "7062",  "plugin"],
-]
+vim_org_scripts = [ ]
+# vim_org_scripts = [
+#   ["IndexedSearch", "7062",  "plugin"],
+# ]
 
 require 'fileutils'
 require 'open-uri'
