@@ -2,10 +2,19 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-09-17.
-" @Last Change: 2015-12-15.
-" @Revision:    1817
+" @Last Change: 2016-02-29.
+" @Revision:    1850
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
+if !exists('g:loaded_tlib')
+    " :nodoc:
+    command! -nargs=+ -bang Tlibtrace :
+    " :nodoc:
+    command! -nargs=+ -bang Tlibassert :
+    " :nodoc:
+    command! -nargs=+ Tlibtype :
+endif
+
 
 if !exists("g:tcomment#blank_lines")
     " If 1, comment blank lines too.
@@ -146,6 +155,7 @@ if !exists('g:tcomment#filetype_map')
     " regexp modifiers (like |\V|) are allowed.
     " let g:tcomment#filetype_map = {...}   "{{{2
     let g:tcomment#filetype_map = {
+                \ 'cpp.doxygen': 'cpp',
                 \ 'mkd': 'html',
                 \ 'rails-views': 'html',
                 \ 'tblgen': 'cpp',
@@ -471,6 +481,7 @@ call tcomment#DefineType('jsx_inline',      '{/* %s */}')
 call tcomment#DefineType('jinja',           '{# %s #}'     )
 call tcomment#DefineType('jinja_block',     "{%% comment %%}%s{%% endcomment %%}\n ")
 call tcomment#DefineType('jproperties',      '# %s'             )
+call tcomment#DefineType('jq',               '# %s'             )
 call tcomment#DefineType('lilypond',         '%% %s'            )
 call tcomment#DefineType('lisp',             '; %s'             )
 call tcomment#DefineType('liquid',           g:tcommentInlineXML)
@@ -554,6 +565,9 @@ call tcomment#DefineType('sh',               '# %s'             )
 call tcomment#DefineType('slim',             '/%s'              )
 call tcomment#DefineType('sls',              '# %s'             )
 call tcomment#DefineType('smarty',           '{* %s *}'         )
+call tcomment#DefineType('solidity',         tcomment#GetLineC('// %s'))
+call tcomment#DefineType('solidity_block',   g:tcommentBlockC)
+call tcomment#DefineType('solidity_inline',  g:tcommentInlineC)
 call tcomment#DefineType('spec',             '# %s'             )
 call tcomment#DefineType('sps',              '* %s.'            )
 call tcomment#DefineType('sps_block',        "* %s."            )
@@ -826,7 +840,7 @@ function! tcomment#Comment(beg, end, ...)
     endif
     " TLogVAR comment_anyway, comment_mode, mode_extra, comment_do
     " " echom "DBG" string(s:cdef)
-    if comment_do ==# 'c'
+    if comment_do ==# 'c' && comment_mode !~# 'I'
         let cbeg = get(s:cdef, 'col', cbeg)
     endif
     " TLogVAR cbeg
@@ -1294,7 +1308,7 @@ call tcomment#CollectFileTypes()
 function! tcomment#Complete(ArgLead, CmdLine, CursorPos) "{{{3
     call tcomment#CollectFileTypes()
     let completions = copy(s:types)
-    let filetype = s:Filetype()
+    let filetype = s:GetFiletype()
     if index(completions, filetype) != -1
         " TLogVAR filetype
         call insert(completions, filetype)
@@ -1350,7 +1364,7 @@ endf
 " s:GetCommentDefinition(beg, end, comment_mode, ?filetype="")
 function! s:GetCommentDefinition(beg, end, comment_mode, ...)
     let ft = a:0 >= 1 ? a:1 : ''
-    " TLogVAR a:comment_mode, ft
+    Tlibtrace 'tcomment', a:beg, a:end, a:comment_mode, ft
     if ft != ''
         let cdef = s:GuessCustomCommentString(ft, a:comment_mode)
     else
@@ -1359,7 +1373,8 @@ function! s:GetCommentDefinition(beg, end, comment_mode, ...)
     " TLogVAR cdef
     let cms = get(cdef, 'commentstring', '')
     if empty(cms)
-        let filetype = s:Filetype(ft)
+        let filetype = s:GetFiletype(ft)
+        Tlibtrace 'tcomment', filetype
         if exists('b:commentstring')
             let cms = b:commentstring
             " TLogVAR 1, cms
@@ -1372,10 +1387,10 @@ function! s:GetCommentDefinition(beg, end, comment_mode, ...)
             endif
             return s:GuessCustomCommentString(filetype, a:comment_mode, cms)
         else
-            let [use_guess_ft, altFiletype] = s:AltFiletype(ft, cdef)
-            " TLogVAR use_guess_ft, altFiletype
+            let [use_guess_ft, alt_filetype] = s:AltFiletype(ft, cdef)
+            Tlibtrace 'tcomment', use_guess_ft, alt_filetype
             if use_guess_ft
-                return s:GuessFileType(a:beg, a:end, a:comment_mode, filetype, altFiletype)
+                return s:GuessFileType(a:beg, a:end, a:comment_mode, filetype, alt_filetype)
             else
                 let guess_cdef = s:GuessVimOptionsCommentString(a:comment_mode)
                 " TLogVAR guess_cdef
@@ -1531,7 +1546,7 @@ function! s:ProcessLine(comment_do, match, checkRx, replace)
     " TLogVAR a:comment_do, a:match, a:checkRx, a:replace
     try
         if !(g:tcomment#blank_lines > 0 || a:match =~ '\S')
-            return a:match
+            return [a:match, 0]
         endif
         if a:comment_do ==# 'k'
             if a:match =~ a:checkRx
@@ -1754,60 +1769,70 @@ function! s:CommentBlock(beg, end, cbeg, cend, comment_mode, comment_do, checkRx
 endf
 
 
-function! s:Filetype(...) "{{{3
+function! s:GetFiletype(...) "{{{3
     let ft = a:0 >= 1 && !empty(a:1) ? a:1 : &filetype
-    let pos = a:0 >= 2 ? a:2 : 0
-    " TLogVAR ft, pos
-    let fts = split(ft, '^\@!\.')
-    " TLogVAR fts
-    " let ft = substitute(ft, '\..*$', '', '')
-    let rv = get(fts, pos, ft)
-    " TLogVAR fts, rv
-    if !exists('s:filetype_map_rx')
+    let poss = a:0 >= 2 ? a:2 : [-1, 1, 0]
+    for pos in poss
+        Tlibtrace 'tcomment', ft, pos
+        if pos == -1
+            let rv = ft
+        else
+            let fts = split(ft, '^\@!\.')
+            " TLogVAR fts
+            " let ft = substitute(ft, '\..*$', '', '')
+            let rv = get(fts, pos, ft)
+            " TLogVAR fts, rv
+        endif
         let fts_rx = '^\%('. join(map(keys(g:tcomment#filetype_map), 'escape(v:val, ''\'')'), '\|') .'\)$'
-    endif
-    " TLogVAR rv, fts_rx
-    if rv =~ fts_rx
-        for [ft_rx, ftrv] in items(g:tcomment#filetype_map)
-            " TLogVAR ft_rx, ftrv
-            if rv =~ ft_rx
-                let rv = substitute(rv, ft_rx, ftrv, '')
-                " TLogVAR rv
-                break
-            endif
-        endfor
-    endif
-    return rv
+        Tlibtrace 'tcomment', fts_rx
+        if rv =~ fts_rx
+            for [ft_rx, ftrv] in items(g:tcomment#filetype_map)
+                " TLogVAR ft_rx, ftrv
+                if rv =~ ft_rx
+                    let rv = substitute(rv, ft_rx, ftrv, '')
+                    Tlibtrace 'tcomment', ft_rx, rv
+                    Tlibtrace 'tcomment', rv
+                    return rv
+                endif
+            endfor
+        endif
+    endfor
+    Tlibtrace 'tcomment', ft
+    return ft
 endf
 
 
+" Handle sub-filetypes etc.
 function! s:AltFiletype(filetype, cdef) "{{{3
-    let filetype = empty(a:filetype) ? &filetype : a:filetype
-    " TLogVAR a:filetype, filetype
+    let filetype = empty(a:filetype) ? s:GetFiletype(&filetype, [-1]) : a:filetype
+    Tlibtrace 'tcomment', a:filetype, filetype
     if g:tcommentGuessFileType || (exists('g:tcommentGuessFileType_'. filetype) 
                 \ && g:tcommentGuessFileType_{filetype} =~ '[^0]')
         if g:tcommentGuessFileType_{filetype} == 1
             if filetype =~ '^.\{-}\..\+$'
-                let altFiletype = s:Filetype(filetype, 1)
+                let alt_filetype = s:GetFiletype(filetype)
             else
-                let altFiletype = ''
+                let alt_filetype = ''
             endif
         else
-            let altFiletype = g:tcommentGuessFileType_{filetype}
+            let alt_filetype = g:tcommentGuessFileType_{filetype}
         endif
-        " TLogVAR 1, altFiletype
-        return [1, altFiletype]
+        Tlibtrace 'tcomment', 1, alt_filetype
+        return [1, alt_filetype]
     elseif filetype =~ '^.\{-}\..\+$'
         " Unfortunately the handling of "sub-filetypes" isn't 
         " consistent. Some use MAJOR.MINOR, others use MINOR.MAJOR.
-        let altFiletype = s:Filetype(filetype, 1)
-        if altFiletype == a:filetype
-            let altFiletype = s:Filetype(filetype, 0)
-        endif
-        " TLogVAR 2, altFiletype
-        return [1, altFiletype]
+        let alt_filetype = s:GetFiletype(filetype)
+        " if alt_filetype == filetype
+        "     let alt_filetype = s:GetFiletype(filetype, 1)
+        "     if alt_filetype == a:filetype
+        "         let alt_filetype = s:GetFiletype(filetype, 0)
+        "     endif
+        " endif
+        Tlibtrace 'tcomment', 2, alt_filetype
+        return [1, alt_filetype]
     else
-        " TLogVAR 3, ''
+        Tlibtrace 'tcomment', 3, ''
         return [0, '']
     endif
 endf

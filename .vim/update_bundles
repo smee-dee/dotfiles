@@ -9,7 +9,7 @@ git_bundles = [
   'git://github.com/Townk/vim-autoclose.git',
   'git://github.com/Lokaltog/vim-powerline.git',
   'git://github.com/vim-scripts/DeleteTrailingWhitespace.git',
-  'git://github.com/scrooloose/syntastic.git',
+  # 'git://github.com/scrooloose/syntastic.git',
   # 'git://github.com/tpope/vim-rvm.git',
   'git://github.com/kien/ctrlp.vim.git',
   # 'git://github.com/wincent/Command-T',
