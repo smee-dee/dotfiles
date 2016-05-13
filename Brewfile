@@ -19,7 +19,7 @@ install cmake
 install wget --enable-iri
 
 install vim --override-system-vi
-install macvim --override-system-vim --enable-clipboard
+install macvim --override-system-vim --enable-clipboard --with-cscope --with-lua
 install homebrew/dupes/grep
 
 install mysql
