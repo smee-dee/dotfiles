@@ -1,0 +1,1 @@
+docker run -p 3306:3306 --name mariadb -v /Users/schmiddi/db/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=devel -d mariadb:latest
