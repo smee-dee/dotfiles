@@ -22,4 +22,4 @@ alias ....="cd ../../.."
 alias fetch-and-rebase="git fetch && git rebase origin/master && git rebase -i origin/master"
 alias ls='ls -G'
 alias brewupdate='brew update && brew upgrade --all && brew upgrade brew-cask; brew cleanup; brew cask cleanup; brew doctor'
-
+alias vertical-update-modules="git co master && git pl && git submodule update && cd wp-content/plugins/kp && git co master && git pl && cd .. && cd kp-utils && git co master && git pl && cd ../../.."
