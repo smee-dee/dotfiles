@@ -517,7 +517,7 @@ map <Leader>pry Obinding.pry<esc>
 " syntax for file types
 au BufRead,BufNewFile *.hamlc setfiletype haml
 
-" let g:go_fmt_command = "goimports"
+let g:go_fmt_command = "goimports"
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
