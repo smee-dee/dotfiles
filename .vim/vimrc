@@ -406,6 +406,7 @@ set nofoldenable " Say no to code folding...
 
 command! Q q " Bind :Q to :q
 command! Qall qall
+command! Poltershot :normal <S-O>save_screenshot('/Users/schmiddi/Downloads/screenshot.png')<esc>
 
 " Disable Ex mode
 map Q <Nop>
