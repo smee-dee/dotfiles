@@ -10,7 +10,7 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 export EDITOR="/usr/bin/vi"
 export PATH=$PATH:/Users/schmiddi/.gem/ruby/1.8/bin:~/bin:./i:./vendor/bin
-export PATH=$PATH:./
+export PATH=$PATH:.
 
 QTDIR=/opt/local/lib/qt3;
 export QTDIR

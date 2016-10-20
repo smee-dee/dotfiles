@@ -17,7 +17,7 @@ ssh-add
 
 export EDITOR="/usr/bin/vi"
 export PATH=$PATH:/Users/schmiddi/.gem/ruby/1.8/bin:~/bin:./i:./vendor/bin
-export PATH=$PATH:./
+export PATH=$PATH:.
 
 unset MAILCHECK
 PS1="\[\033[1;31m\]\h \[\033[1;34m\]\W\[\033[0m\]\[\033[1;34m\] #\[\033[0m\] "
