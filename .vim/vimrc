@@ -406,7 +406,6 @@ set nofoldenable " Say no to code folding...
 
 command! Q q " Bind :Q to :q
 command! Qall qall
-save_screenshot('/Users/schmiddi/Downloads/jo.png', full: true)
 command! -nargs=1 Poltershot :normal <S-O>save_screenshot('/Users/schmiddi/Downloads/<args>.png', full: true)<esc>:w<return>
 
 " Disable Ex mode
