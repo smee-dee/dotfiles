@@ -3,6 +3,7 @@ source ~/.git-completion.bash
 source ~/.aliases
 source ~/code/kp/tools/frontend-config/dotfiles/.paths-frontend 2> /dev/null
 source ~/.bash_config
+source ~/.profile
 
 ssh-add
 
