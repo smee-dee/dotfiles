@@ -22,11 +22,10 @@ install vim --override-system-vi
 install macvim --override-system-vim --enable-clipboard --with-cscope --with-lua
 install homebrew/dupes/grep
 
-install mysql
+install mariadb
 
 install unrar
 
-install rename
 install automake
 install autoconf
 install imagemagick
