@@ -25,3 +25,4 @@ alias brewupdate='brew update && brew upgrade --all && brew upgrade brew-cask; b
 alias vertical-update-modules="git co master && git pl && git submodule update && cd wp-content/plugins/kp && git co master && git pl && cd .. && cd kp-utils && git co master && git pl && cd ../../.. && git add . && git commit -m 'Update submodules'"
 alias ip='curl https://api.ipify.org; echo'
 alias merge-request-reviewer="ruby -e 'p %w(marco dvdh schmiddi sarah henning).shuffle.first'"
+alias opened-files="sudo lsof -n | cut -f1 -d' ' | uniq -c | sort | tail"
