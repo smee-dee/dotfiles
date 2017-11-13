@@ -10,14 +10,12 @@ def CtrlPPyMatch():
     limit = int(vim.eval('a:limit'))
     mmode = vim.eval('a:mmode')
     aregex = int(vim.eval('a:regex'))
-    spath = vim.eval('a:ispath')
     crfile = vim.eval('a:crfile')
 
-    if not vim.eval('exists("g:ctrlp_match_current_file")') and ispath and crfile:
+    if crfile in items and int(vim.eval("pymatcher#ShouldHideCurrentFile(a:ispath, a:crfile)")):
         items.remove(crfile)
 
     rez = vim.eval('s:rez')
-
 
     regex = ''
     if aregex == 1:
@@ -29,8 +27,7 @@ def CtrlPPyMatch():
         # If the string is longer that one character, append a mismatch
         # expression to each character (except the last).
         if len(lowAstr) > 1:
-            mismatch = ["[^" + c + "]*" for c in escaped[:-1]]
-            regex = ''.join([c for pair in zip(escaped[:-1], mismatch) for c in pair])
+            regex = ''.join([c + "[^" + c + "]*" for c in escaped[:-1]])
 
         # Append the last character in the string to the regex
         regex += escaped[-1]
@@ -87,4 +84,3 @@ def CtrlPPyMatch():
 
     vim.command("let s:regex = '%s'" % regex)
     vim.command('let s:rez = [%s]' % ','.join(vimrez))
-

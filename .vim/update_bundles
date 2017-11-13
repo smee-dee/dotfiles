@@ -36,7 +36,8 @@ git_bundles = [
   'https://github.com/fatih/vim-go',
   # 'git@github.com:scrooloose/nerdtree.git',
   'git@github.com:pbrisbin/vim-mkdir.git',
-  'https://github.com/FelikZ/ctrlp-py-matcher'
+  'https://github.com/FelikZ/ctrlp-py-matcher',
+  'https://github.com/posva/vim-vue.git'
 ]
 
 vim_org_scripts = [ ]

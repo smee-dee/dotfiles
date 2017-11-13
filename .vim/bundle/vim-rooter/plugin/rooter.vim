@@ -136,7 +136,9 @@ function! s:ChangeToRootDirectory()
     " Test against 1 for backwards compatibility
     if g:rooter_change_directory_for_non_project_files == 1 ||
           \ g:rooter_change_directory_for_non_project_files ==? 'current'
-      call s:ChangeDirectory(fnamemodify(s:fd, ':h'))
+      if expand('%') != ''
+        call s:ChangeDirectory(fnamemodify(s:fd, ':h'))
+      endif
     elseif g:rooter_change_directory_for_non_project_files ==? 'home'
       call s:ChangeDirectory($HOME)
     endif
@@ -148,6 +150,10 @@ endfunction
 " For third-parties.  Not used by plugin.
 function! FindRootDirectory()
   let s:fd = expand('%:p')
+
+  if empty(s:fd)
+    let s:fd = getcwd()
+  endif
 
   if g:rooter_resolve_links
     let s:fd = resolve(s:fd)
@@ -166,6 +172,7 @@ if !exists('g:rooter_manual_only')
   augroup rooter
     autocmd!
     autocmd VimEnter,BufEnter * :Rooter
+    autocmd BufWritePost * :call setbufvar('%', 'rootDir', '') | :Rooter
   augroup END
 endif
 
