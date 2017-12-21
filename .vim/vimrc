@@ -612,7 +612,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Save/Restore sessions
 function! MakeSession()
-  let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+  let b:sessiondir = $HOME . "/.vim-sessions" . getcwd()
   if (filewritable(b:sessiondir) != 2)
     exe 'silent !mkdir -p ' b:sessiondir
     redraw!
@@ -622,7 +622,7 @@ function! MakeSession()
 endfunction
 
 function! LoadSession()
-  let b:sessiondir = $HOME . "/.vim/sessions" . getcwd()
+  let b:sessiondir = $HOME . "/.vim-sessions" . getcwd()
   let b:sessionfile = b:sessiondir . "/session.vim"
   if (filereadable(b:sessionfile))
     exe 'source ' b:sessionfile
