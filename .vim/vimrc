@@ -628,5 +628,5 @@ function! LoadSession()
     exe 'source ' b:sessionfile
   endif
 endfunction
-au VimEnter * nested :call LoadSession()
-au VimLeave * :call MakeSession()
+" au VimEnter * nested :call LoadSession()
+" au VimLeave * :call MakeSession()
