@@ -15,15 +15,15 @@ fun! gotest#write_file(path, contents) abort
   call mkdir(fnamemodify(l:full_path, ':h'), 'p')
   call writefile(a:contents, l:full_path)
   exe 'cd ' . l:dir . '/src'
-  silent exe 'e ' . a:path
+  silent exe 'e! ' . a:path
 
   " Set cursor.
   let l:lnum = 1
   for l:line in a:contents
-    let l:m = match(l:line, '')
+    let l:m = match(l:line, "\x1f")
     if l:m > -1
       call setpos('.', [0, l:lnum, l:m, 0])
-      call setline('.', substitute(getline('.'), '', '', ''))
+      call setline('.', substitute(getline('.'), "\x1f", '', ''))
       break
     endif
 
@@ -67,7 +67,9 @@ fun! gotest#assert_buffer(skipHeader, want) abort
     for l:lnum in range(0, len(l:buffer) - 1)
       " Bit rudimentary, but works reasonably well.
       if match(l:buffer[l:lnum], '^\v(func|var|const|import \(|\))') > -1
-        let l:buffer = l:buffer[l:lnum:]
+        " vint bug: https://github.com/Kuniwak/vint/issues/179
+        " vint: -ProhibitUsingUndeclaredVariable
+        let l:buffer = l:buffer[l:lnum:len(l:buffer)]
         break
       endif
     endfor
@@ -99,6 +101,5 @@ fun! gotest#assert_fixture(path) abort
   let l:want = readfile(printf('%s/test-fixtures/%s', g:vim_go_root, a:path))
   call gotest#assert_buffer(0, l:want)
 endfun
-
 
 " vim: sw=2 ts=2 et
