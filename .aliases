@@ -26,3 +26,4 @@ alias vertical-update-modules="git co master && git pl && git submodule update &
 alias ip='curl https://api.ipify.org; echo'
 alias merge-request-reviewer="ruby -e 'p %w(marco dvdh schmiddi sarah henning).shuffle.first'"
 alias opened-files="sudo lsof -n | cut -f1 -d' ' | uniq -c | sort | tail"
+alias cat="ccat"

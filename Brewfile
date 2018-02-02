@@ -53,5 +53,6 @@ install tree
 install webkit2png
 install zopfli
 install coreutils
+install ccat
 
 cleanup
