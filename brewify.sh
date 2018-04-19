@@ -11,8 +11,8 @@ function bootstrap() {
 }
 
 function brewify() {
-  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-  brew bundle Brewfile
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  sh ./Brewfile
   #
   # launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
   # launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist

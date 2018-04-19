@@ -1,58 +1,58 @@
-update
-upgrade
+brew update
+brew upgrade
 
 # Install GNU core utilities (those that come with OS X are outdated)
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
-install coreutils
+brew install coreutils
 # Install some other useful utilities like `sponge`
-install moreutils
+brew install moreutils
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed
-install findutils
+brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`
-install gnu-sed --default-names
+brew install gnu-sed --default-names
 # Install Bash 4
-install bash
+brew install bash
 
-install cmake
+brew install cmake
 
 # Install wget with IRI support
-install wget --enable-iri
+brew install wget --enable-iri
 
-install vim --override-system-vi
-install macvim --override-system-vim --enable-clipboard --with-cscope --with-lua
-install homebrew/dupes/grep
+brew install vim --override-system-vi
+brew install macvim --override-system-vim --enable-clipboard --with-cscope --with-lua
+brew install homebrew/dupes/grep
 
-install mariadb
+# install mariadb
 
-install unrar
+brew install unrar
 
-install automake
-install autoconf
-install imagemagick
-install curl
-install watch
-install ack
-install sqlite
-install the_silver_searcher
-install readline
-install git
-install bash-completion2
-install redis
-install mongodb
-install imagemagick --with-webp
-install lynx
-install nmap
-install node
-install p7zip
-install pigz
-install pv
-install rename
-install rhino
-install sqlmap
-install tree
-install webkit2png
-install zopfli
-install coreutils
-install ccat
+brew install automake
+brew install autoconf
+brew install imagemagick
+brew install curl
+brew install watch
+brew install ack
+# install sqlite
+brew install the_silver_searcher
+brew install readline
+brew install git
+brew install bash-completion2
+brew install redis
+# install mongodb
+brew install imagemagick --with-webp
+brew install lynx
+brew install nmap
+brew install node
+brew install p7zip
+brew install pigz
+brew install pv
+brew install rename
+brew install rhino
+# install sqlmap
+brew install tree
+brew install webkit2png
+brew install zopfli
+brew install coreutils
+brew install ccat
 
-cleanup
+brew cleanup

@@ -42,4 +42,4 @@ source ~/.git-completion.bash
 HISTFILESIZE=10000
 export HISTCONTROL=ignoredups:ignorespace
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
