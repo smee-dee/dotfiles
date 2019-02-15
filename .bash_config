@@ -2,5 +2,7 @@ shopt -s histappend
 unset MAILCHECK
 PS1="🍺  \[\033[1;31m\]\h \[\033[1;34m\]\W\[\033[0m\]\[\033[1;34m\] #\[\033[0m\] "
 
+LANG="en_US.UTF-8"
+
 HISTFILESIZE=10000
 export HISTCONTROL=ignoredups:ignorespace
