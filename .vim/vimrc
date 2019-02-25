@@ -74,9 +74,7 @@ set winheight=15
 
 set splitbelow splitright
 
-if has('mouse')
-  set mouse=a
-endif
+set mouse=c
 
 "  ---------------------------------------------------------------------------
 "  Text Formatting
