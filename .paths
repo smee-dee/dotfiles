@@ -16,11 +16,9 @@ QTDIR=/opt/local/lib/qt3;
 export QTDIR
 export PATH=/usr/local/Cellar/php/5.3.10/bin:$PATH
 
-export PATH=$PATH:$(brew --prefix mysql)/bin
+# export PATH=$PATH:$(brew --prefix mysql)/bin
 
 # export CC=/usr/local/bin/gcc-4.9
 # export CPP=/usr/local/bin/cpp-4.9
 # export CXX=/usr/local/bin/g++-4.9
-source ~/.git-completion.bash
-source ~/.profile
 export PATH=/usr/local/bin:$PATH
