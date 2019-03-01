@@ -1,29 +1,14 @@
 alias kpwp='ssh ssh-216511-admin@unternehmen.kaeuferportal.de'
 alias be='bundle exec'
 alias flushdns='dscacheutil -flushcache'
-alias composer="php54 /usr/bin/composer.phar"
-alias rubocop="bundle exec rubocop"
-alias composer="php /usr/bin/composer.phar"
 alias gotest="$GOPATH/bin/goconvey -cover=true"
-alias cms="cd ~/code/kaeuferportal/cms"
-alias frontend="cd ~/code/kaeuferportal/frontend"
-alias backend="cd ~/code/kaeuferportal/backend"
-alias goprojects="cd ~/code/go/src/codevault.io/go_projects 2> /dev/null || cd ~/code/kp/go/src/codevault.io/go_projects"
-alias deployment="cd ~/code/kp/deployment/"
-alias godeployment="cd ~/code/kp/go-deployment/"
-alias fastcap="cap cached_assets=true"
-alias spec="be rspec spec --format Fuubar --color spec"
-alias pspec="be rake parallel:spec"
 alias migrate5="be rake db:migrate && bin/rails db:environment:set RAILS_ENV=test db:drop db:create db:migrate parallel:prepare && RAILS_ENV=test wrapper_open='rubocop:disable Metrics/LineLength' wrapper_close='rubocop:enable Metrics/LineLength' bundle exec annotate -is --sort -f rdoc --force"
 alias annotate="be annotate -f rdoc --force"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
-alias fetch-and-rebase="git fetch && git rebase origin/master && git rebase -i origin/master"
 alias ls='ls -G'
 alias brewupdate='brew update && brew upgrade --all && brew upgrade brew-cask; brew cleanup; brew cask cleanup; brew doctor'
-alias vertical-update-modules="git co master && git pl && git submodule update && cd wp-content/plugins/kp && git co master && git pl && cd .. && cd kp-utils && git co master && git pl && cd ../../.. && git add . && git commit -m 'Update submodules'"
 alias ip='curl https://api.ipify.org; echo'
-alias merge-request-reviewer="ruby -e 'p %w(marco dvdh schmiddi sarah henning).shuffle.first'"
 alias opened-files="sudo lsof -n | cut -f1 -d' ' | uniq -c | sort | tail"
 alias cat="ccat"
