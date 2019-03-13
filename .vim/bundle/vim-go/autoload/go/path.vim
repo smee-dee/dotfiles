@@ -1,3 +1,7 @@
+" don't spam the user when Vim is started in Vi compatibility mode
+let s:cpo_save = &cpo
+set cpo&vim
+
 " initial_go_path is used to store the initial GOPATH that was set when Vim
 " was started. It's used with :GoPathClear to restore the GOPATH when the user
 " changed it explicitly via :GoPath. Initially it's empty. It's being set when
@@ -45,9 +49,9 @@ function! go#path#Default() abort
   return $GOPATH
 endfunction
 
-" HasPath checks whether the given path exists in GOPATH environment variable
+" s:HasPath checks whether the given path exists in GOPATH environment variable
 " or not
-function! go#path#HasPath(path) abort
+function! s:HasPath(path) abort
   let go_paths = split(go#path#Default(), go#util#PathListSep())
   let last_char = strlen(a:path) - 1
 
@@ -94,11 +98,11 @@ function! go#path#Detect() abort
     " gb vendor plugin
     " (https://github.com/constabulary/gb/tree/master/cmd/gb-vendor)
     let gb_vendor_root = src_path . "vendor" . go#util#PathSep()
-    if isdirectory(gb_vendor_root) && !go#path#HasPath(gb_vendor_root)
+    if isdirectory(gb_vendor_root) && !s:HasPath(gb_vendor_root)
       let gopath = gb_vendor_root . go#util#PathListSep() . gopath
     endif
 
-    if !go#path#HasPath(src_path)
+    if !s:HasPath(src_path)
       let gopath =  src_path . go#util#PathListSep() . gopath
     endif
   endif
@@ -108,7 +112,7 @@ function! go#path#Detect() abort
   if !empty(godeps_root)
     let godeps_path = join([fnamemodify(godeps_root, ':p:h:h'), "Godeps", "_workspace" ], go#util#PathSep())
 
-    if !go#path#HasPath(godeps_path)
+    if !s:HasPath(godeps_path)
       let gopath =  godeps_path . go#util#PathListSep() . gopath
     endif
   endif
@@ -121,13 +125,14 @@ endfunction
 
 " BinPath returns the binary path of installed go tools.
 function! go#path#BinPath() abort
-  let bin_path = ""
+  let bin_path = go#config#BinPath()
+  if bin_path != ""
+    return bin_path
+  endif
 
   " check if our global custom path is set, if not check if $GOBIN is set so
   " we can use it, otherwise use default GOPATH
-  if exists("g:go_bin_path")
-    let bin_path = g:go_bin_path
-  elseif $GOBIN != ""
+  if $GOBIN != ""
     let bin_path = $GOBIN
   else
     let go_paths = split(go#path#Default(), go#util#PathListSep())
@@ -141,11 +146,13 @@ function! go#path#BinPath() abort
 endfunction
 
 " CheckBinPath checks whether the given binary exists or not and returns the
-" path of the binary. It returns an empty string doesn't exists.
+" path of the binary, respecting the go_bin_path and go_search_bin_path_first
+" settings. It returns an empty string if the binary doesn't exist.
 function! go#path#CheckBinPath(binpath) abort
   " remove whitespaces if user applied something like 'goimports   '
   let binpath = substitute(a:binpath, '^\s*\(.\{-}\)\s*$', '\1', '')
-  " save off original path
+
+  " save original path
   let old_path = $PATH
 
   " check if we have an appropriate bin_path
@@ -153,7 +160,12 @@ function! go#path#CheckBinPath(binpath) abort
   if !empty(go_bin_path)
     " append our GOBIN and GOPATH paths and be sure they can be found there...
     " let us search in our GOBIN and GOPATH paths
-    let $PATH = go_bin_path . go#util#PathListSep() . $PATH
+    " respect the ordering specified by go_search_bin_path_first
+    if go#config#SearchBinPathFirst()
+      let $PATH = go_bin_path . go#util#PathListSep() . $PATH
+    else
+      let $PATH = $PATH . go#util#PathListSep() . go_bin_path
+    endif
   endif
 
   " if it's in PATH just return it
@@ -164,7 +176,7 @@ function! go#path#CheckBinPath(binpath) abort
     let $PATH = old_path
 
     if go#util#IsUsingCygwinShell() == 1
-      return go#path#CygwinPath(binpath)
+      return s:CygwinPath(binpath)
     endif
 
     return binpath
@@ -183,14 +195,49 @@ function! go#path#CheckBinPath(binpath) abort
   let $PATH = old_path
 
   if go#util#IsUsingCygwinShell() == 1
-    return go#path#CygwinPath(a:binpath)
+    return s:CygwinPath(a:binpath)
   endif
 
   return go_bin_path . go#util#PathSep() . basename
 endfunction
 
-function! go#path#CygwinPath(path)
+function! s:CygwinPath(path)
    return substitute(a:path, '\\', '/', "g")
 endfunction
+
+" go#path#ToURI converts path to a file URI. path should be an absolute path.
+" Relative paths cannot be properly converted to a URI; when path is a
+" relative path, the file scheme will not be prepended.
+function! go#path#ToURI(path)
+  let l:path = a:path
+  if l:path[1:2] is# ':\'
+    let l:path = '/' . l:path[0:1] . l:path[3:]
+  endif
+
+  return substitute(
+  \   (l:path[0] is# '/' ? 'file://' : '') . go#uri#EncodePath(l:path),
+  \   '\\',
+  \   '/',
+  \   'g',
+  \)
+endfunction
+
+function! go#path#FromURI(uri) abort
+    let l:i = len('file://')
+    let l:encoded_path = a:uri[: l:i - 1] is# 'file://' ? a:uri[l:i :] : a:uri
+
+    let l:path = go#uri#Decode(l:encoded_path)
+
+    " If the path is like /C:/foo/bar, it should be C:\foo\bar instead.
+    if l:path =~# '^/[a-zA-Z]:'
+        let l:path = substitute(l:path[1:], '/', '\\', 'g')
+    endif
+
+    return l:path
+endfunction
+
+" restore Vi compatibility settings
+let &cpo = s:cpo_save
+unlet s:cpo_save
 
 " vim: sw=2 ts=2 et
