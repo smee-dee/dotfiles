@@ -320,6 +320,8 @@ autocmd InsertLeave * highlight  CursorLine guibg=gray15
 " highlight PmenuSel     ctermbg=0   ctermfg=3
 " highlight SpellBad     ctermbg=0   ctermfg=1
 
+highlight LineNr guibg=#000000 guifg=#00aa00
+
 "  ---------------------------------------------------------------------------
 "  Misc
 "  ---------------------------------------------------------------------------

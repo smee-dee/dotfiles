@@ -22,8 +22,6 @@ brew install vim --override-system-vi
 brew install macvim --override-system-vim --enable-clipboard --with-cscope --with-lua
 brew install homebrew/dupes/grep
 
-# install mariadb
-
 brew install unrar
 
 brew install automake
@@ -37,7 +35,6 @@ brew install the_silver_searcher
 brew install readline
 brew install git
 brew install bash-completion2
-brew install redis
 # install mongodb
 brew install imagemagick --with-webp
 brew install lynx
@@ -55,4 +52,7 @@ brew install zopfli
 brew install coreutils
 brew install ccat
 
+brew install bash-completion
+
 brew cleanup
+
