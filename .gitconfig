@@ -46,3 +46,5 @@
   ff = only
 [url "git@codevault.io:"]
   insteadOf = https://codevault.io/
+[branch]
+	autosetuprebase = always
