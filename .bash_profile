@@ -5,8 +5,6 @@ source ~/.aliases
 source ~/.bash_config
 source ~/.profile
 
-ssh-add
-
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 

@@ -300,7 +300,7 @@ color blackboard
 " colorscheme ir_black
 colorscheme tir_black
 " colorscheme solarized
-hi CursorLine guibg=gray13
+hi CursorLine guibg=gray30
 autocmd InsertEnter * highlight  CursorLine guibg=gray10
 autocmd InsertLeave * highlight  CursorLine guibg=gray15
 

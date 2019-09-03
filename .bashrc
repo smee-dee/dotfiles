@@ -13,7 +13,6 @@ alias be='bundle exec'
 alias flushdns='dscacheutil -flushcache'
 alias composer="php54 /usr/bin/composer.phar"
 alias vim="mvim"
-ssh-add
 
 export EDITOR="/usr/bin/vi"
 export PATH=$PATH:/Users/schmiddi/.gem/ruby/1.8/bin:~/bin:./i:./vendor/bin
