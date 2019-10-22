@@ -630,3 +630,6 @@ function! LoadSession()
 endfunction
 " au VimEnter * nested :call LoadSession()
 " au VimLeave * :call MakeSession()
+
+
+set rtp+=/usr/local/bin/fzf
