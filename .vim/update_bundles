@@ -37,7 +37,8 @@ git_bundles = [
   # 'git@github.com:scrooloose/nerdtree.git',
   'git@github.com:pbrisbin/vim-mkdir.git',
   'https://github.com/FelikZ/ctrlp-py-matcher',
-  'https://github.com/posva/vim-vue.git'
+  'https://github.com/posva/vim-vue.git',
+  'https://github.com/MaxMEllon/vim-jsx-pretty.git'
 ]
 
 vim_org_scripts = [ ]
@@ -61,9 +62,12 @@ git_bundles.each do |url|
   puts "unpacking #{url} into #{dir}"
   `git clone #{url} #{dir}`
 
+  FileUtils.cd(dir)
+  `git submodule update --init --recursive`
+  FileUtils.cd('../')
+
   if dir == 'YouCompleteMe'
     FileUtils.cd(dir)
-    `git submodule update --init --recursive`
     `./install.py --clang-completer`
     `find . -name ".git"|xargs rm -rf`
     # `./install.sh --clang-completer`
