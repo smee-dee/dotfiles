@@ -38,7 +38,8 @@ git_bundles = [
   'git@github.com:pbrisbin/vim-mkdir.git',
   'https://github.com/FelikZ/ctrlp-py-matcher',
   'https://github.com/posva/vim-vue.git',
-  'https://github.com/MaxMEllon/vim-jsx-pretty.git'
+  'https://github.com/MaxMEllon/vim-jsx-pretty.git',
+  'https://github.com/styled-components/vim-styled-components.git'
 ]
 
 vim_org_scripts = [ ]

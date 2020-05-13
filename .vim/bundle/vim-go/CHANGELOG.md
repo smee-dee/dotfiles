@@ -6,6 +6,7 @@ BACKWARDS INCOMPATIBILITIES:
 * Require at least Neovim >= 0.4.0
   [[GH-2853]](https://github.com/fatih/vim-go/pull/2853)
   [[GH-2856]](https://github.com/fatih/vim-go/pull/2856)
+  [[GH-2863]](https://github.com/fatih/vim-go/pull/2863)
 
 IMPROVEMENTS:
 * Make signs for breakpoints configurable.
@@ -75,9 +76,6 @@ IMPROVEMENTS:
   the cursor.
   [[GH-2822]](https://github.com/fatih/vim-go/pull/2822)
   [[GH-2839]](https://github.com/fatih/vim-go/pull/2839)
-* Parse compiler errors that prevent golangci-lint linters from running more
-  usefully.
-  [[GH-2835]](https://github.com/fatih/vim-go/pull/2835)
 * Clarify documentation for terminal options.
   [GH-2843]](https://github.com/fatih/vim-go/pull/2843)
 
@@ -139,6 +137,11 @@ BUG FIXES:
 * Document that `g:go_jump_to_error` apples to running the metalinter on save,
   too.
   [[GH-2854]](https://github.com/fatih/vim-go/pull/2854)
+* Ignore commented out import statements when executing `:GoImport`.
+  [[GH-2862]](https://github.com/fatih/vim-go/pull/2862)
+* Interpret file paths in `go vet` errors relative to the current buffer's
+  directory.
+  [[GH-2882]](https://github.com/fatih/vim-go/pull/2882)
 
 ## v1.22 - (January 30, 2020)
 
