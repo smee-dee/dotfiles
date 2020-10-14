@@ -4,6 +4,42 @@ set nocompatible
 "  Plugins
 "  ---------------------------------------------------------------------------
 
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'tomtom/tcomment_vim'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Townk/vim-autoclose'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'vim-scripts/DeleteTrailingWhitespace'
+Plugin 'kien/ctrlp.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-markdown'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'AndrewRadev/vim-eco'
+Plugin 'briancollins/vim-jst'
+Plugin 'airblade/vim-rooter'
+Plugin 'fatih/vim-go'
+Plugin 'pbrisbin/vim-mkdir'
+Plugin 'FelikZ/ctrlp-py-matcher'
+Plugin 'posva/vim-vue'
+Plugin 'styled-components/vim-styled-components'
+Plugin 'prettier/vim-prettier'
+Plugin 'eslint/eslint'
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
 " silent! runtime bundles.vim
 runtime plugins/bclose.vim
 " runtime plugins/mru.vim

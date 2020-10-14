@@ -12,6 +12,7 @@ cd $DOTFILES_DIR
 function bootstrap() {
   copy_all_files
   source ~/.bash_profile
+  vim +PluginInstall +qall
 }
 
 function copy_all_files() {
