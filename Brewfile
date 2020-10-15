@@ -54,5 +54,7 @@ brew install ccat
 
 brew install bash-completion
 
+brew install cmake macvim python mono go nodejs
+
 brew cleanup
 

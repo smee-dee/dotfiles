@@ -9,7 +9,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'tomtom/tcomment_vim'
-Plugin 'Shougo/neocomplete.vim'
 Plugin 'Townk/vim-autoclose'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'vim-scripts/DeleteTrailingWhitespace'
@@ -33,6 +32,7 @@ Plugin 'posva/vim-vue'
 Plugin 'styled-components/vim-styled-components'
 Plugin 'prettier/vim-prettier'
 Plugin 'eslint/eslint'
+Plugin 'ycm-core/YouCompleteMe'
 
 
 " All of your Plugins must be added before the following line
@@ -208,6 +208,7 @@ let g:DeleteTrailingWhitespace_Action = 'delete'
 " AutoClose
 let g:AutoClosePairs = {'(': ')', '{': '}', '[': ']', '"': '"', "'": "'", '#{': '}'}
 let g:AutoCloseProtectedRegions = ["Character"]
+let g:AutoClosePumvisible = {"ENTER": "", "ESC": ""}
 
 " CtrlP
 nmap <leader>f :CtrlP<cr>
