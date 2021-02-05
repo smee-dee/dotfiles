@@ -45,5 +45,5 @@
   insteadOf = https://codevault.io/
 [branch]
 	autosetuprebase = always
-# [commit]
-# 	gpgsign = true
+[commit]
+ 	gpgsign = true
