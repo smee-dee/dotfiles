@@ -32,7 +32,8 @@ Plugin 'posva/vim-vue'
 Plugin 'styled-components/vim-styled-components'
 Plugin 'prettier/vim-prettier'
 Plugin 'eslint/eslint'
-Plugin 'ycm-core/YouCompleteMe'
+Plugin 'Shougo/neocomplete'
+" Plugin 'ycm-core/YouCompleteMe'
 
 
 " All of your Plugins must be added before the following line
@@ -335,7 +336,8 @@ set t_Co=256
 set background=dark
 color blackboard
 " colorscheme ir_black
-colorscheme tir_black
+" colorscheme tir_black
+colorscheme solarized
 " colorscheme solarized
 hi CursorLine guibg=gray30
 autocmd InsertEnter * highlight  CursorLine guibg=gray10

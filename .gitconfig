@@ -21,7 +21,7 @@
 	excludesfile = /Users/schmiddi/.gitignore_global
   mergeoptions = "--no-edit"
 	precomposeunicode = false
-  editor = "/usr/local/bin/vim"
+  editor = "/usr/bin/vim"
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
@@ -45,5 +45,5 @@
   insteadOf = https://codevault.io/
 [branch]
 	autosetuprebase = always
-[commit]
-	gpgsign = true
+# [commit]
+# 	gpgsign = true

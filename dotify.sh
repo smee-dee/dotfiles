@@ -12,13 +12,12 @@ cd $DOTFILES_DIR
 function bootstrap() {
   copy_all_files
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-  source ~/.bash_profile
   vim +PluginInstall +qall
-  (
-    echo "Compiling YouCompleteMe"
-    cd ~/.vim/bundle/YouCompleteMe
-    python3 install.py --clang-complete
-  )
+  # (
+  #   echo "Compiling YouCompleteMe"
+  #   cd ~/.vim/bundle/YouCompleteMe
+  #   python3 install.py --clang-complete
+  # )
 }
 
 function copy_all_files() {

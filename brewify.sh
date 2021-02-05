@@ -7,7 +7,6 @@ cd $DOTFILES_DIR
 
 function bootstrap() {
   brewify
-  source ~/.bash_profile
 }
 
 function brewify() {
@@ -25,6 +24,8 @@ function brewify() {
   # launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
   # launchctl load ~/Library/LaunchAgents/homebrew.mxcl.php54.plist
 
+  echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> /Users/schmiddi/.zprofile
+  eval $(/opt/homebrew/bin/brew shellenv)
   brew link
   brew cleanup
 }

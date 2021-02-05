@@ -11,4 +11,4 @@ alias ls='ls -G'
 alias brewupdate='brew update && brew upgrade --all && brew upgrade brew-cask; brew cleanup; brew cask cleanup; brew doctor'
 alias ip='curl https://api.ipify.org; echo'
 alias opened-files="sudo lsof -n | cut -f1 -d' ' | uniq -c | sort | tail"
-alias cat="ccat"
+# alias cat="ccat"

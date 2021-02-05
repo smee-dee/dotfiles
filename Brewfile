@@ -11,7 +11,6 @@ brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`
 brew install gnu-sed --default-names
 # Install Bash 4
-brew install bash
 
 brew install cmake
 
@@ -26,17 +25,10 @@ brew install unrar
 
 brew install automake
 brew install autoconf
-brew install imagemagick
 brew install curl
 brew install watch
 brew install ack
-# install sqlite
-brew install the_silver_searcher
-brew install readline
 brew install git
-brew install bash-completion2
-# install mongodb
-brew install imagemagick --with-webp
 brew install lynx
 brew install nmap
 brew install node
@@ -45,16 +37,19 @@ brew install pigz
 brew install pv
 brew install rename
 brew install rhino
-# install sqlmap
 brew install tree
-brew install webkit2png
 brew install zopfli
 brew install coreutils
 brew install ccat
 
-brew install bash-completion
-
-brew install cmake macvim python mono go nodejs
+brew install cmake python nodejs
 
 brew cleanup
 
+brew install gpg2 gnupg pinentry-mac
+
+brew install zsh
+
+brew install iterm2
+brew install svn
+brew install homebrew/cask-fonts/font-roboto-mono-for-powerline
