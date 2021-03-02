@@ -17,3 +17,7 @@ pip3 install --user git+git://github.com/Lokaltog/powerline --verbose
   curl https://raw.githubusercontent.com/powerline/fonts/master/fontconfig/50-enable-terminess-powerline.conf --output 50-enable-terminess-powerline.conf
   mv 50-enable-terminess-powerline.conf ~/.config/fontconfig/conf.d/
 )
+
+(
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+)
